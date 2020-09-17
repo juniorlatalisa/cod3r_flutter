@@ -19,4 +19,8 @@ main() {
       break;
     }
   }
+  print('Solução Curso');
+  for (var valor = '#'; valor != '#######'; valor += '#') {
+    print(valor);
+  }
 }
