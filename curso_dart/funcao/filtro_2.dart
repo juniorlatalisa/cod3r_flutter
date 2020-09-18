@@ -6,11 +6,14 @@ main() {
 
   // var notasBoas = notas.where((nota) => nota >= 7);
 
-  const notasBoasValor = 7;
+  final notasFn = (double nota, double base) => nota >= base;
+
+  const notasBoasValor = 7.0;
   const notasMuitoBoasValor = 8.8;
 
-  var notasBoas = notas.where((nota) => nota >= notasBoasValor);
-  var notasMuitoBoas = notas.where((nota) => nota >= notasMuitoBoasValor);
+  var notasBoas = notas.where((nota) => notasFn(nota, notasBoasValor));
+  var notasMuitoBoas =
+      notas.where((nota) => notasFn(nota, notasMuitoBoasValor));
 
   print(notas);
   print(notasBoas);
