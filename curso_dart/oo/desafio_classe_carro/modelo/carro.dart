@@ -1,5 +1,6 @@
 class Carro {
   final int velocidadeMaxima;
+
   /*
     O "_" transforma em "privado" para outros arquivos.
     No mesmo arquivo ainda é "visível".
@@ -19,7 +20,7 @@ class Carro {
     Setter
   */
   void set velocidadeAtual(int velocidade) {
-    if (velocidade > 0 && velocidade < velocidadeMaxima) {
+    if (velocidade >= 0 && velocidade <= velocidadeMaxima) {
       this._velocidadeAtual = velocidade;
     }
   }
