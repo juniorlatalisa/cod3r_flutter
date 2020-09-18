@@ -7,19 +7,24 @@ class Carro {
   }
 
   int acelerar() {
-    velocidadeAtual += 5;
-    if (velocidadeAtual > velocidadeMaxima) {
-      velocidadeAtual = velocidadeMaxima;
-    }
-    return velocidadeAtual;
+    final aceleracao = velocidadeAtual + 5;
+    return velocidadeAtual =
+        (aceleracao > velocidadeMaxima) ? velocidadeMaxima : aceleracao;
+    // velocidadeAtual += 5;
+    // if (velocidadeAtual > velocidadeMaxima) {
+    //   velocidadeAtual = velocidadeMaxima;
+    // }
+    // return velocidadeAtual;
   }
 
   int frear() {
-    velocidadeAtual -= 5;
-    if (velocidadeAtual < 0) {
-      velocidadeAtual = 0;
-    }
-    return velocidadeAtual;
+    final desaceleracao = velocidadeAtual - 5;
+    return velocidadeAtual = (desaceleracao < 0) ? 0 : desaceleracao;
+    // velocidadeAtual -= 5;
+    // if (velocidadeAtual < 0) {
+    //   velocidadeAtual = 0;
+    // }
+    // return velocidadeAtual;
   }
 
   bool estaNoLimite() {
