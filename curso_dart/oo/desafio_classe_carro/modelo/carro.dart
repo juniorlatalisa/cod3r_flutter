@@ -1,37 +1,45 @@
 class Carro {
   final int velocidadeMaxima;
-  int velocidadeAtual;
+  /*
+    O "_" transforma em "privado" para outros arquivos.
+    No mesmo arquivo ainda é "visível".
+  */
+  int _velocidadeAtual;
 
   Carro(this.velocidadeMaxima) {
-    this.velocidadeAtual = 0;
+    this._velocidadeAtual = 0;
+  }
+
+  /*
+    Getter
+  */
+  int get velocidadeAtual => this._velocidadeAtual;
+
+  /*
+    Setter
+  */
+  void set velocidadeAtual(int velocidade) {
+    if (velocidade > 0 && velocidade < velocidadeMaxima) {
+      this._velocidadeAtual = velocidade;
+    }
   }
 
   int acelerar() {
-    final aceleracao = velocidadeAtual + 5;
-    return velocidadeAtual =
+    final aceleracao = _velocidadeAtual + 5;
+    return _velocidadeAtual =
         (aceleracao > velocidadeMaxima) ? velocidadeMaxima : aceleracao;
-    // velocidadeAtual += 5;
-    // if (velocidadeAtual > velocidadeMaxima) {
-    //   velocidadeAtual = velocidadeMaxima;
-    // }
-    // return velocidadeAtual;
   }
 
   int frear() {
-    final desaceleracao = velocidadeAtual - 5;
-    return velocidadeAtual = (desaceleracao < 0) ? 0 : desaceleracao;
-    // velocidadeAtual -= 5;
-    // if (velocidadeAtual < 0) {
-    //   velocidadeAtual = 0;
-    // }
-    // return velocidadeAtual;
+    final desaceleracao = _velocidadeAtual - 5;
+    return _velocidadeAtual = (desaceleracao < 0) ? 0 : desaceleracao;
   }
 
   bool estaNoLimite() {
-    return velocidadeAtual == velocidadeMaxima;
+    return _velocidadeAtual == velocidadeMaxima;
   }
 
   bool estaParado() {
-    return velocidadeAtual == 0;
+    return _velocidadeAtual == 0;
   }
 }
