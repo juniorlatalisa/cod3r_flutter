@@ -6,6 +6,7 @@ void main() => runApp(PerguntaApp());
 
 class _PerguntaAppState extends State<PerguntaApp> {
   var _perguntaSelecionada = 0;
+  var _pontuacaoTotal = 0;
   final _perguntas = const [
     {
       'texto': 'Qual é a sua cor favorita?',
@@ -36,14 +37,17 @@ class _PerguntaAppState extends State<PerguntaApp> {
     },
   ];
 
-  void _responder() {
+  void _responder(int pontuacao) {
     //Informa mudança de estado para ui.
     if (temPerguntaSelecionada) {
       setState(() {
         _perguntaSelecionada++;
+        _pontuacaoTotal += pontuacao;
       });
     }
-    print('Pergunta respondida $_perguntaSelecionada');
+    print('''
+      Pergunta respondida $_perguntaSelecionada
+      com a pontuação total de $_pontuacaoTotal''');
   }
 
   bool get temPerguntaSelecionada => _perguntaSelecionada < _perguntas.length;
