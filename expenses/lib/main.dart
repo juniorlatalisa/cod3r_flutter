@@ -36,7 +36,6 @@ class MyHomePage extends StatelessWidget {
         title: Text('Despesas'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Container(
@@ -48,50 +47,81 @@ class MyHomePage extends StatelessWidget {
           ),
           Column(
               children: _transactions
-                  .map((tr) => Row(
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: 15,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.purple,
-                                width: 2,
+                  .map((tr) => Card(
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 10,
                               ),
-                            ),
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              'R\$ ${tr.value.toStringAsFixed(2)}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.purple,
-                                fontSize: 20,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.purple,
+                                  width: 2,
+                                ),
                               ),
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                tr.title,
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'R\$ ${tr.value.toStringAsFixed(2)}',
                                 style: TextStyle(
-                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
+                                  color: Colors.purple,
+                                  fontSize: 20,
                                 ),
                               ),
-                              Text(
-                                DateFormat('d MMM y').format(tr.date),
-                                style: TextStyle(
-                                  color: Colors.grey,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  tr.title,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                Text(
+                                  DateFormat('d MMM y').format(tr.date),
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ))
                   .toList()),
+          Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Título',
+                    ),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Valor (R\$)',
+                    ),
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FlatButton(
+                          child: Text('Nova Transação'),
+                          textColor: Colors.purple,
+                          onPressed: () {},
+                        )
+                      ]),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
