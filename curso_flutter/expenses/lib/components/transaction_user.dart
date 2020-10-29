@@ -27,15 +27,16 @@ class _TransactionsUserState extends State<TransactionsUser> {
   ];
 
   _addTransaction(String title, double value) {
+    Navigator.of(context).pop();
+
     final newTransction = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
       value: value,
       date: DateTime.now(),
     );
-    setState(() {
-      _transactions.add(newTransction);
-    });
+
+    setState(() => _transactions.add(newTransction));
   }
 
   @override
