@@ -7,6 +7,10 @@ class ExpensesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
         home: MyHomePage(),
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+          accentColor: Colors.amber,
+        ),
       );
 }
 

@@ -7,7 +7,7 @@ class TransactionList extends StatelessWidget {
 
   TransactionList(this.transactions);
 
-  _createCard(Transaction tr) => Card(
+  _createCard(BuildContext context, Transaction tr) => Card(
         child: Row(
           children: <Widget>[
             Container(
@@ -17,7 +17,7 @@ class TransactionList extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.purple,
+                  color: Theme.of(context).primaryColor,
                   width: 2,
                 ),
               ),
@@ -26,7 +26,7 @@ class TransactionList extends StatelessWidget {
                 'R\$ ${tr.value.toStringAsFixed(2)}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.purple,
+                  color: Theme.of(context).primaryColor,
                   fontSize: 20,
                 ),
               ),
@@ -59,7 +59,7 @@ class TransactionList extends StatelessWidget {
       height: 300,
       child: ListView.builder(
         itemCount: transactions.length,
-        itemBuilder: (ctx, index) => _createCard(transactions[index]),
+        itemBuilder: (ctx, index) => _createCard(context, transactions[index]),
       ),
     );
   }
