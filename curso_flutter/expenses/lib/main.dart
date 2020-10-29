@@ -15,9 +15,16 @@ class ExpensesApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _add = Icon(Icons.add);
     return Scaffold(
       appBar: AppBar(
         title: Text('Despesas'),
+        actions: <Widget>[
+          IconButton(
+            icon: _add,
+            onPressed: null,
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -34,6 +41,11 @@ class MyHomePage extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: _add,
+        onPressed: null,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
