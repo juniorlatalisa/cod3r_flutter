@@ -7,7 +7,7 @@ class TransactionList extends StatelessWidget {
 
   TransactionList(this.transactions);
 
-  Card _createCard(Transaction tr) => Card(
+  _createCard(Transaction tr) => Card(
         child: Row(
           children: <Widget>[
             Container(
