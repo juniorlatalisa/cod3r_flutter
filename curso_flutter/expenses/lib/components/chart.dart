@@ -21,10 +21,7 @@ class Chart extends StatelessWidget {
         }
       }
 
-      return {
-        'day': day,
-        'value': value,
-      };
+      return {'day': day, 'value': value};
     });
   }
 
@@ -34,7 +31,9 @@ class Chart extends StatelessWidget {
       elevation: 6,
       margin: EdgeInsets.all(20),
       child: Row(
-        children: <Widget>[],
+        children: groupedTransactions
+            .map((e) => Text(e['value'].toString()))
+            .toList(),
       ),
     );
   }

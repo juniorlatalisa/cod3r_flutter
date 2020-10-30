@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:expenses/components/transaction_form.dart';
 import 'package:expenses/components/transaction_list.dart';
+import 'package:expenses/components/chart.dart';
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
 
@@ -12,19 +13,36 @@ class TransactionsUser extends StatefulWidget {
 
 class _TransactionsUserState extends State<TransactionsUser> {
   final _transactions = <Transaction>[
-    // Transaction(
-    //   id: 't1',
-    //   title: 'Novo Tênis de corrida',
-    //   value: 310.76,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Conta de luz',
-    //   value: 211.3,
-    //   date: DateTime.now(),
-    // ),
+    Transaction(
+      id: 't0',
+      title: 'Conta antiga',
+      value: 400.0,
+      date: DateTime.now().subtract(Duration(days: 33)),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'Novo Tênis de corrida',
+      value: 310.76,
+      date: DateTime.now().subtract(Duration(days: 3)),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de luz',
+      value: 11.3,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Conta de luz 2',
+      value: 8.7,
+      date: DateTime.now(),
+    ),
   ];
+
+  List<Transaction> get _recentTransactions {
+    final startWeek = DateTime.now().subtract(Duration(days: 7));
+    return _transactions.where((tr) => tr.date.isAfter(startWeek)).toList();
+  }
 
   _addTransaction(String title, double value) {
     Navigator.of(context).pop();
@@ -62,13 +80,7 @@ class _TransactionsUserState extends State<TransactionsUser> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              child: Card(
-                color: Colors.blue,
-                child: Text('Gráfico'),
-                elevation: 5,
-              ),
-            ),
+            Chart(_recentTransactions),
             TransactionList(_transactions),
           ],
         ),
