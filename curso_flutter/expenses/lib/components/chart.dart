@@ -35,14 +35,21 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupedTransactions
-            .map((e) => ChartBat(
-                  e['day'],
-                  e['value'],
-                  (e['value'] as double) / total,
-                )) //Text(e['value'].toString())
-            .toList(),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactions
+              .map((e) => Flexible(
+                    fit: FlexFit.tight,
+                    child: ChartBat(
+                      e['day'],
+                      e['value'],
+                      (e['value'] as double) / total,
+                    ),
+                  )) //Text(e['value'].toString())
+              .toList(),
+        ),
       ),
     );
   }
