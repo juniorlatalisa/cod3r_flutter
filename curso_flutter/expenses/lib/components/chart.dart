@@ -36,6 +36,7 @@ class Chart extends StatelessWidget {
             .map((e) => ChartBat(
                   e['day'],
                   e['value'],
+                  0.01,
                 )) //Text(e['value'].toString())
             .toList(),
       ),
