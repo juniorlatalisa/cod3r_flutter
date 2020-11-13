@@ -1,3 +1,4 @@
+import 'package:expenses/components/chart_bar.dart';
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -32,7 +33,10 @@ class Chart extends StatelessWidget {
       margin: EdgeInsets.all(20),
       child: Row(
         children: groupedTransactions
-            .map((e) => Text(e['value'].toString()))
+            .map((e) => ChartBat(
+                  e['day'],
+                  e['value'],
+                )) //Text(e['value'].toString())
             .toList(),
       ),
     );
