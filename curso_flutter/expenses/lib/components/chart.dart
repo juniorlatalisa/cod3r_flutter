@@ -23,7 +23,7 @@ class Chart extends StatelessWidget {
       }
 
       return {'day': day, 'value': value};
-    });
+    }).reversed.toList();
   }
 
   double get _weekTotalValue =>
