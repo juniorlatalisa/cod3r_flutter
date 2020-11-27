@@ -45,7 +45,7 @@ class Chart extends StatelessWidget {
                     child: ChartBat(
                       e['day'],
                       e['value'],
-                      (e['value'] as double) / total,
+                      (total == 0) ? 0 : (e['value'] as double) / total,
                     ),
                   )) //Text(e['value'].toString())
               .toList(),
