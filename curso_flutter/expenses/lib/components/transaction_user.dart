@@ -57,6 +57,10 @@ class _TransactionsUserState extends State<TransactionsUser> {
     setState(() => _transactions.add(newTransction));
   }
 
+  _delTransaction(String id) {
+    setState(() => _transactions.removeWhere((tr) => id == tr.id));
+  }
+
   @override
   Widget build(BuildContext context) {
     _openTransactionFormModal() => showModalBottomSheet(
@@ -81,7 +85,7 @@ class _TransactionsUserState extends State<TransactionsUser> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionList(_transactions),
+            TransactionList(_transactions, _delTransaction),
           ],
         ),
       ),

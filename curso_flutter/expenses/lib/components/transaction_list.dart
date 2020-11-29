@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final void Function(String) onRemove;
 
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this.onRemove);
 
   final _format = DateFormat('d MMM y');
 
@@ -29,7 +30,14 @@ class TransactionList extends StatelessWidget {
             tr.title,
             style: Theme.of(context).textTheme.headline6,
           ),
-          subtitle: Text(_format.format(tr.date)),
+          subtitle: Text(
+            _format.format(tr.date),
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.delete),
+            color: Theme.of(context).errorColor,
+            onPressed: () => onRemove(tr.id),
+          ),
         ),
       );
 
