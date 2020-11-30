@@ -13,30 +13,36 @@ class TransactionsUser extends StatefulWidget {
 
 class _TransactionsUserState extends State<TransactionsUser> {
   final _transactions = <Transaction>[
-    // Transaction(
-    //   id: 't0',
-    //   title: 'Conta antiga',
-    //   value: 400.0,
-    //   date: DateTime.now().subtract(Duration(days: 33)),
-    // ),
-    // Transaction(
-    //   id: 't1',
-    //   title: 'Novo Tênis de corrida',
-    //   value: 310.76,
-    //   date: DateTime.now().subtract(Duration(days: 3)),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Conta de luz',
-    //   value: 11.3,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't3',
-    //   title: 'Conta de luz 2',
-    //   value: 8.7,
-    //   date: DateTime.now(),
-    // ),
+    Transaction(
+      id: 't0',
+      title: 'Conta antiga',
+      value: 400.0,
+      date: DateTime.now().subtract(Duration(days: 33)),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'Novo Tênis de corrida',
+      value: 310.76,
+      date: DateTime.now().subtract(Duration(days: 3)),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de luz',
+      value: 11.3,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Conta de luz 2',
+      value: 8.7,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Conta de luz 3',
+      value: 8.7,
+      date: DateTime.now(),
+    ),
   ];
 
   List<Transaction> get _recentTransactions {

@@ -105,7 +105,7 @@ class TransactionList extends StatelessWidget {
     }
 
     return Container(
-      height: 300,
+      height: 430,
       child: ListView.builder(
         itemCount: transactions.length,
         itemBuilder: (ctx, index) => _createCard(context, transactions[index]),
