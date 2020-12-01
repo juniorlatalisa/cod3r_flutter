@@ -35,6 +35,13 @@ class ExpensesApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  // @override
+  // Widget build(BuildContext context) {
+  //   SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.landscapeRight,
+  //   ]);
+  //   return TransactionsUser();
+  // }
   @override
   Widget build(BuildContext context) => TransactionsUser();
 }

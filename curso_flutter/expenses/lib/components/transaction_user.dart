@@ -88,12 +88,14 @@ class _TransactionsUserState extends State<TransactionsUser> {
     final _height =
         _mqd.size.height - _mqd.padding.top - _appBar.preferredSize.height;
     final _chartHeight = _height * 0.3;
+    final _chartHeightMin = 150.0;
     final _chart = Container(
-      height: _chartHeight,
+      height: _chartHeight < _chartHeightMin ? _chartHeightMin : _chartHeight,
       child: Chart(_recentTransactions),
     );
     final _list = Container(
-      height: _height - _chartHeight,
+      height: _height -
+          (_chartHeight < _chartHeightMin ? _chartHeightMin : _chartHeight),
       child: TransactionList(_transactions, _delTransaction),
     );
 
