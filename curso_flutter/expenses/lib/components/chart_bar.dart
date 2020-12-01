@@ -11,7 +11,7 @@ class ChartBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (ctx, constraints) {
-      final textHeight = 18.0;
+      final textHeight = 18.0 * MediaQuery.of(context).textScaleFactor;
       final spaceHeight = constraints.maxHeight * 0.05;
       return Column(
         children: <Widget>[
