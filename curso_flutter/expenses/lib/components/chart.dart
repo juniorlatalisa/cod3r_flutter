@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Chart extends StatelessWidget {
-  Chart(this.recentTransactions);
-
   final List<Transaction> recentTransactions;
+  final double height;
+
+  Chart(this.recentTransactions, this.height);
 
   List<Map<String, Object>> get groupedTransactions {
     return List.generate(7, (index) {
@@ -42,10 +43,11 @@ class Chart extends StatelessWidget {
           children: groupedTransactions
               .map((e) => Flexible(
                     fit: FlexFit.tight,
-                    child: ChartBat(
+                    child: ChartBar(
                       e['day'],
                       e['value'],
                       (total == 0) ? 0 : (e['value'] as double) / total,
+                      height,
                     ),
                   )) //Text(e['value'].toString())
               .toList(),

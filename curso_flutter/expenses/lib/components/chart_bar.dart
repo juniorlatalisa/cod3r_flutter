@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 
-class ChartBat extends StatelessWidget {
+class ChartBar extends StatelessWidget {
   final String label;
   final double value;
   final double percentege;
+  final double height;
 
-  ChartBat(this.label, this.value, this.percentege);
+  ChartBar(this.label, this.value, this.percentege, this.height);
 
   @override
   Widget build(BuildContext context) {
+    final _textHeight = 20.0;
+    final _spaceHeight = height * 0.03;
+    final _paddingHeight = 60.0;
     return Column(
       children: <Widget>[
         Container(
-          height: 20,
+          height: _textHeight,
           child: FittedBox(
             child: Text('${value.toStringAsFixed(2)}'),
           ),
         ),
-        SizedBox(height: 5),
+        SizedBox(height: _spaceHeight),
         Container(
-          height: 60,
+          height: height - _paddingHeight - _textHeight * 2 - _spaceHeight * 2,
           width: 10,
           child: Stack(
             alignment: Alignment.bottomCenter,
@@ -46,8 +50,11 @@ class ChartBat extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 5),
-        Text(label)
+        SizedBox(height: _spaceHeight),
+        Container(
+          height: _textHeight,
+          child: Text(label),
+        )
       ],
     );
   }
