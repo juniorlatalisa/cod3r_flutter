@@ -87,10 +87,10 @@ class _TransactionsUserState extends State<TransactionsUser> {
     final _mqd = MediaQuery.of(context);
     final _height =
         _mqd.size.height - _mqd.padding.top - _appBar.preferredSize.height;
-    final _chartHeight = _height * 0.4;
+    final _chartHeight = _height * 0.3;
     final _chart = Container(
       height: _chartHeight,
-      child: Chart(_recentTransactions, _chartHeight),
+      child: Chart(_recentTransactions),
     );
     final _list = Container(
       height: _height - _chartHeight,

@@ -5,9 +5,8 @@ import 'package:intl/intl.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
-  final double height;
 
-  Chart(this.recentTransactions, this.height);
+  Chart(this.recentTransactions);
 
   List<Map<String, Object>> get groupedTransactions {
     return List.generate(7, (index) {
@@ -47,7 +46,6 @@ class Chart extends StatelessWidget {
                       e['day'],
                       e['value'],
                       (total == 0) ? 0 : (e['value'] as double) / total,
-                      height,
                     ),
                   )) //Text(e['value'].toString())
               .toList(),
