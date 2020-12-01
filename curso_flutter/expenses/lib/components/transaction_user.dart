@@ -12,6 +12,7 @@ class TransactionsUser extends StatefulWidget {
 }
 
 class _TransactionsUserState extends State<TransactionsUser> {
+  var showGrafico = true;
   final _transactions = <Transaction>[
     Transaction(
       id: 't0',
@@ -104,7 +105,20 @@ class _TransactionsUserState extends State<TransactionsUser> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[_chart, _list],
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Exibir gráfico'),
+                Switch(
+                    value: showGrafico,
+                    onChanged: (newValue) =>
+                        setState(() => showGrafico = newValue))
+              ],
+            ),
+            if (showGrafico) _chart,
+            _list,
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
