@@ -22,14 +22,14 @@ class _TransactionsUserState extends State<TransactionsUser> {
     Transaction(
       id: 't1',
       title: 'Novo Tênis de corrida',
-      value: 310.76,
+      value: 10.76,
       date: DateTime.now().subtract(Duration(days: 3)),
     ),
     Transaction(
       id: 't2',
       title: 'Conta de luz',
       value: 11.3,
-      date: DateTime.now(),
+      date: DateTime.now().subtract(Duration(days: 1)),
     ),
     Transaction(
       id: 't3',
@@ -75,24 +75,34 @@ class _TransactionsUserState extends State<TransactionsUser> {
         );
 
     final _add = Icon(Icons.add);
+    final _appBar = AppBar(
+      title: Text('Despesas'),
+      actions: <Widget>[
+        IconButton(
+          icon: _add,
+          onPressed: _openTransactionFormModal,
+        )
+      ],
+    );
+    final _mqd = MediaQuery.of(context);
+    final _height =
+        _mqd.size.height - _mqd.padding.top - _appBar.preferredSize.height;
+
+    final _chart = Container(
+      height: _height * 0.3,
+      child: Chart(_recentTransactions),
+    );
+    final _list = Container(
+      height: _height * 0.7,
+      child: TransactionList(_transactions, _delTransaction),
+    );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Despesas'),
-        actions: <Widget>[
-          IconButton(
-            icon: _add,
-            onPressed: _openTransactionFormModal,
-          )
-        ],
-      ),
+      appBar: _appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Chart(_recentTransactions),
-            TransactionList(_transactions, _delTransaction),
-          ],
+          children: <Widget>[_chart, _list],
         ),
       ),
       floatingActionButton: FloatingActionButton(

@@ -41,49 +41,6 @@ class TransactionList extends StatelessWidget {
         ),
       );
 
-  // _createCard(BuildContext context, Transaction tr) => Card(
-  //       child: Row(
-  //         children: <Widget>[
-  //           Container(
-  //             margin: EdgeInsets.symmetric(
-  //               horizontal: 15,
-  //               vertical: 10,
-  //             ),
-  //             decoration: BoxDecoration(
-  //               border: Border.all(
-  //                 color: Theme.of(context).primaryColor,
-  //                 width: 2,
-  //               ),
-  //             ),
-  //             padding: EdgeInsets.all(10),
-  //             child: Text(
-  //               'R\$ ${tr.value.toStringAsFixed(2)}',
-  //               style: TextStyle(
-  //                 fontWeight: FontWeight.bold,
-  //                 color: Theme.of(context).primaryColor,
-  //                 fontSize: 20,
-  //               ),
-  //             ),
-  //           ),
-  //           Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: <Widget>[
-  //               Text(
-  //                 tr.title,
-  //                 style: Theme.of(context).textTheme.headline6,
-  //               ),
-  //               Text(
-  //                 DateFormat('d MMM y').format(tr.date),
-  //                 style: TextStyle(
-  //                   color: Colors.grey,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ],
-  //       ),
-  //     );
-
   @override
   Widget build(BuildContext context) {
     if (transactions.isEmpty) {
@@ -104,12 +61,9 @@ class TransactionList extends StatelessWidget {
       );
     }
 
-    return Container(
-      height: 430,
-      child: ListView.builder(
-        itemCount: transactions.length,
-        itemBuilder: (ctx, index) => _createCard(context, transactions[index]),
-      ),
+    return ListView.builder(
+      itemCount: transactions.length,
+      itemBuilder: (ctx, index) => _createCard(context, transactions[index]),
     );
   }
 }
