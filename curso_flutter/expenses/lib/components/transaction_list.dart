@@ -1,4 +1,5 @@
 import 'package:expenses/models/transaction.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
@@ -44,21 +45,23 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (transactions.isEmpty) {
-      return Column(
-        children: <Widget>[
-          Text(
-            'Nenhuma transação cadastrada',
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Image.asset(
-            'assets/images/waiting.png',
-            height: MediaQuery.of(context).size.height / 2,
-          )
-        ],
-      );
+      return LayoutBuilder(builder: (ctx, constraints) {
+        return Column(
+          children: <Widget>[
+            Text(
+              'Nenhuma transação cadastrada',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            SizedBox(
+              height: constraints.maxHeight * 0.15,
+            ),
+            Image.asset(
+              'assets/images/waiting.png',
+              height: constraints.maxHeight * 0.5,
+            )
+          ],
+        );
+      });
     }
 
     return ListView.builder(
