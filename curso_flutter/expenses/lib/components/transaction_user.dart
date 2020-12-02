@@ -74,36 +74,42 @@ class _TransactionsUserState extends State<TransactionsUser> {
           context: context,
           builder: (_) => TransactionForm(_addTransaction),
         );
-
+    final _mqd = MediaQuery.of(context);
+    final _isLandscape = _mqd.orientation == Orientation.landscape;
     final _add = Icon(Icons.add);
     final _appBar = AppBar(
       title: Text('Despesas'),
       actions: <Widget>[
+        if (_isLandscape)
+          IconButton(
+            icon: Icon(showGrafico ? Icons.list : Icons.show_chart),
+            onPressed: () => setState(() => showGrafico = !showGrafico),
+          ),
         IconButton(
           icon: _add,
           onPressed: _openTransactionFormModal,
         )
       ],
     );
-    final _mqd = MediaQuery.of(context);
-    final _isLandscape = _mqd.orientation == Orientation.landscape;
+
     final _height =
         _mqd.size.height - _mqd.padding.top - _appBar.preferredSize.height;
-    final _chartHeight = _height * (_isLandscape ? 0.6 : 0.3);
+    final _chartHeight =
+        _height * (_isLandscape ? (showGrafico ? 0.7 : 0.0) : 0.3);
     final _chartHeightMin = 150.0;
     final _chart = Container(
       height: _chartHeight < _chartHeightMin ? _chartHeightMin : _chartHeight,
       child: Chart(_recentTransactions),
     );
-    final _switch = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('Exibir gráfico'),
-        Switch(
-            value: showGrafico,
-            onChanged: (newValue) => setState(() => showGrafico = newValue))
-      ],
-    );
+    // final _switch = Row(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: [
+    //     Text('Exibir gráfico'),
+    //     Switch(
+    //         value: showGrafico,
+    //         onChanged: (newValue) => setState(() => showGrafico = newValue))
+    //   ],
+    // );
     final _list = Container(
       height: _height -
           (_chartHeight < _chartHeightMin ? _chartHeightMin : _chartHeight),
@@ -116,7 +122,7 @@ class _TransactionsUserState extends State<TransactionsUser> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            if (_isLandscape) _switch,
+            // if (_isLandscape) _switch,
             if (showGrafico || !_isLandscape) _chart,
             if (!showGrafico || !_isLandscape) _list,
           ],
