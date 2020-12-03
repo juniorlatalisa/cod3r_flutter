@@ -72,11 +72,9 @@ class _TransactionsUserState extends State<TransactionsUser> {
 
   final _isIOS = !Platform.isIOS;
 
-  Widget _getIconButton(IconData icon, Function fn) {
-    return _isIOS
-        ? GestureDetector(child: Icon(icon), onTap: fn)
-        : IconButton(icon: Icon(icon), onPressed: fn);
-  }
+  Widget _getIconButton(IconData icon, Function fn) => _isIOS
+      ? GestureDetector(child: Icon(icon), onTap: fn)
+      : IconButton(icon: Icon(icon), onPressed: fn);
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +108,6 @@ class _TransactionsUserState extends State<TransactionsUser> {
             title: _title,
             actions: _actions,
           );
-
     final _height =
         _mqd.size.height - _mqd.padding.top - _appBar.preferredSize.height;
     final _chartHeight =
@@ -144,18 +141,22 @@ class _TransactionsUserState extends State<TransactionsUser> {
       ],
     );
 
-    return Scaffold(
-      appBar: _appBar,
-      body: SingleChildScrollView(
-        child: _body,
-      ),
-      floatingActionButton: _isIOS
-          ? null
-          : FloatingActionButton(
+    return _isIOS
+        ? CupertinoPageScaffold(
+            navigationBar: _appBar,
+            child: _body,
+          )
+        : Scaffold(
+            appBar: _appBar,
+            body: SingleChildScrollView(
+              child: _body,
+            ),
+            floatingActionButton: FloatingActionButton(
               child: Icon(Icons.add),
               onPressed: _openTransactionFormModal,
             ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+          );
   }
 }
