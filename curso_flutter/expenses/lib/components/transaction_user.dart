@@ -84,10 +84,13 @@ class _TransactionsUserState extends State<TransactionsUser> {
         );
     final _mqd = MediaQuery.of(context);
     final _isLandscape = _mqd.orientation == Orientation.landscape;
+    final IconData _showChart =
+        _isIOS ? CupertinoIcons.chart_bar : Icons.show_chart;
+    final IconData _showList = _isIOS ? CupertinoIcons.list_dash : Icons.list;
     final _actions = <Widget>[
       if (_isLandscape)
         _getIconButton(
-          showGrafico ? Icons.list : Icons.show_chart,
+          showGrafico ? _showList : _showChart,
           () => setState(() => showGrafico = !showGrafico),
         ),
       _getIconButton(
@@ -140,17 +143,19 @@ class _TransactionsUserState extends State<TransactionsUser> {
         if (!showGrafico || !_isLandscape) _list,
       ],
     );
-
+    final _bodyPage = SafeArea(
+      child: SingleChildScrollView(
+        child: _body,
+      ),
+    );
     return _isIOS
         ? CupertinoPageScaffold(
             navigationBar: _appBar,
-            child: _body,
+            child: _bodyPage,
           )
         : Scaffold(
             appBar: _appBar,
-            body: SingleChildScrollView(
-              child: _body,
-            ),
+            body: _bodyPage,
             floatingActionButton: FloatingActionButton(
               child: Icon(Icons.add),
               onPressed: _openTransactionFormModal,
