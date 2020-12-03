@@ -5,6 +5,7 @@ import 'package:expenses/components/transaction_form.dart';
 import 'package:expenses/components/transaction_list.dart';
 import 'package:expenses/components/chart.dart';
 import 'package:expenses/models/transaction.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TransactionsUser extends StatefulWidget {
@@ -69,6 +70,14 @@ class _TransactionsUserState extends State<TransactionsUser> {
     setState(() => _transactions.removeWhere((tr) => id == tr.id));
   }
 
+  final _isIOS = !Platform.isIOS;
+
+  Widget _getIconButton(IconData icon, Function fn) {
+    return _isIOS
+        ? GestureDetector(child: Icon(icon), onTap: fn)
+        : IconButton(icon: Icon(icon), onPressed: fn);
+  }
+
   @override
   Widget build(BuildContext context) {
     _openTransactionFormModal() => showModalBottomSheet(
@@ -77,21 +86,30 @@ class _TransactionsUserState extends State<TransactionsUser> {
         );
     final _mqd = MediaQuery.of(context);
     final _isLandscape = _mqd.orientation == Orientation.landscape;
-    final _add = Icon(Icons.add);
-    final _appBar = AppBar(
-      title: Text('Despesas'),
-      actions: <Widget>[
-        if (_isLandscape)
-          IconButton(
-            icon: Icon(showGrafico ? Icons.list : Icons.show_chart),
-            onPressed: () => setState(() => showGrafico = !showGrafico),
-          ),
-        IconButton(
-          icon: _add,
-          onPressed: _openTransactionFormModal,
-        )
-      ],
-    );
+    final _actions = <Widget>[
+      if (_isLandscape)
+        _getIconButton(
+          showGrafico ? Icons.list : Icons.show_chart,
+          () => setState(() => showGrafico = !showGrafico),
+        ),
+      _getIconButton(
+        _isIOS ? CupertinoIcons.add : Icons.add,
+        _openTransactionFormModal,
+      ),
+    ];
+    final _title = Text('Despessas pessoais');
+    final PreferredSizeWidget _appBar = _isIOS
+        ? CupertinoNavigationBar(
+            middle: _title,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: _actions,
+            ),
+          )
+        : AppBar(
+            title: _title,
+            actions: _actions,
+          );
 
     final _height =
         _mqd.size.height - _mqd.padding.top - _appBar.preferredSize.height;
@@ -107,33 +125,34 @@ class _TransactionsUserState extends State<TransactionsUser> {
           (_chartHeight < _chartHeightMin ? _chartHeightMin : _chartHeight),
       child: TransactionList(_transactions, _delTransaction),
     );
+    final _body = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     Text('Exibir gráfico'),
+        //     Switch.adaptive(
+        //         activeColor: Theme.of(context).accentColor,
+        //         value: showGrafico,
+        //         onChanged: (newValue) =>
+        //             setState(() => showGrafico = newValue))
+        //   ],
+        // ),
+        if (showGrafico || !_isLandscape) _chart,
+        if (!showGrafico || !_isLandscape) _list,
+      ],
+    );
 
     return Scaffold(
       appBar: _appBar,
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Text('Exibir gráfico'),
-            //     Switch.adaptive(
-            //         activeColor: Theme.of(context).accentColor,
-            //         value: showGrafico,
-            //         onChanged: (newValue) =>
-            //             setState(() => showGrafico = newValue))
-            //   ],
-            // ),
-            if (showGrafico || !_isLandscape) _chart,
-            if (!showGrafico || !_isLandscape) _list,
-          ],
-        ),
+        child: _body,
       ),
-      floatingActionButton: Platform.isIOS
+      floatingActionButton: _isIOS
           ? null
           : FloatingActionButton(
-              child: _add,
+              child: Icon(Icons.add),
               onPressed: _openTransactionFormModal,
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
