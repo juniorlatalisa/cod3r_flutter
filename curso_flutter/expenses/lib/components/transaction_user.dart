@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:io';
 
 import 'package:expenses/components/transaction_form.dart';
 import 'package:expenses/components/transaction_list.dart';
@@ -101,15 +102,6 @@ class _TransactionsUserState extends State<TransactionsUser> {
       height: _chartHeight < _chartHeightMin ? _chartHeightMin : _chartHeight,
       child: Chart(_recentTransactions),
     );
-    // final _switch = Row(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   children: [
-    //     Text('Exibir gráfico'),
-    //     Switch(
-    //         value: showGrafico,
-    //         onChanged: (newValue) => setState(() => showGrafico = newValue))
-    //   ],
-    // );
     final _list = Container(
       height: _height -
           (_chartHeight < _chartHeightMin ? _chartHeightMin : _chartHeight),
@@ -122,16 +114,28 @@ class _TransactionsUserState extends State<TransactionsUser> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // if (_isLandscape) _switch,
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Text('Exibir gráfico'),
+            //     Switch.adaptive(
+            //         activeColor: Theme.of(context).accentColor,
+            //         value: showGrafico,
+            //         onChanged: (newValue) =>
+            //             setState(() => showGrafico = newValue))
+            //   ],
+            // ),
             if (showGrafico || !_isLandscape) _chart,
             if (!showGrafico || !_isLandscape) _list,
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: _add,
-        onPressed: _openTransactionFormModal,
-      ),
+      floatingActionButton: Platform.isIOS
+          ? null
+          : FloatingActionButton(
+              child: _add,
+              onPressed: _openTransactionFormModal,
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
