@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:expenses/components/transaction_user.dart';
 import 'package:flutter/material.dart';
+
+final isIOSPlatform = !Platform.isIOS;
 
 main() => runApp(ExpensesApp());
 

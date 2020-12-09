@@ -1,9 +1,9 @@
 import 'dart:math';
-import 'dart:io';
 
 import 'package:expenses/components/transaction_form.dart';
 import 'package:expenses/components/transaction_list.dart';
 import 'package:expenses/components/chart.dart';
+import 'package:expenses/main.dart';
 import 'package:expenses/models/transaction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,9 +70,7 @@ class _TransactionsUserState extends State<TransactionsUser> {
     setState(() => _transactions.removeWhere((tr) => id == tr.id));
   }
 
-  final _isIOS = !Platform.isIOS;
-
-  Widget _getIconButton(IconData icon, Function fn) => _isIOS
+  Widget _getIconButton(IconData icon, Function fn) => isIOSPlatform
       ? GestureDetector(child: Icon(icon), onTap: fn)
       : IconButton(icon: Icon(icon), onPressed: fn);
 
@@ -85,8 +83,9 @@ class _TransactionsUserState extends State<TransactionsUser> {
     final _mqd = MediaQuery.of(context);
     final _isLandscape = _mqd.orientation == Orientation.landscape;
     final IconData _showChart =
-        _isIOS ? CupertinoIcons.chart_bar : Icons.show_chart;
-    final IconData _showList = _isIOS ? CupertinoIcons.list_dash : Icons.list;
+        isIOSPlatform ? CupertinoIcons.chart_bar : Icons.show_chart;
+    final IconData _showList =
+        isIOSPlatform ? CupertinoIcons.list_dash : Icons.list;
     final _actions = <Widget>[
       if (_isLandscape)
         _getIconButton(
@@ -94,12 +93,12 @@ class _TransactionsUserState extends State<TransactionsUser> {
           () => setState(() => showGrafico = !showGrafico),
         ),
       _getIconButton(
-        _isIOS ? CupertinoIcons.add : Icons.add,
+        isIOSPlatform ? CupertinoIcons.add : Icons.add,
         _openTransactionFormModal,
       ),
     ];
     final _title = Text('Despessas pessoais');
-    final PreferredSizeWidget _appBar = _isIOS
+    final PreferredSizeWidget _appBar = isIOSPlatform
         ? CupertinoNavigationBar(
             middle: _title,
             trailing: Row(
@@ -148,7 +147,7 @@ class _TransactionsUserState extends State<TransactionsUser> {
         child: _body,
       ),
     );
-    return _isIOS
+    return isIOSPlatform
         ? CupertinoPageScaffold(
             navigationBar: _appBar,
             child: _bodyPage,
