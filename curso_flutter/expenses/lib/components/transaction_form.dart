@@ -1,4 +1,5 @@
 import 'package:expenses/components/adaptative_button.dart';
+import 'package:expenses/components/adaptative_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -54,25 +55,37 @@ class _TransactionFormState extends State<TransactionForm> {
           ),
           child: Column(
             children: <Widget>[
-              TextField(
-                // onChanged: (newValue) => title = newValue,
+              AdaptativeTextField(
                 controller: _title,
-                decoration: InputDecoration(
-                  labelText: 'Título',
-                ),
+                label: 'Título',
               ),
-              TextField(
-                // onChanged: (newValue) => value = newValue,
+              // TextField(
+              //   // onChanged: (newValue) => title = newValue,
+              //   controller: _title,
+              //   decoration: InputDecoration(
+              //     labelText: 'Título',
+              //   ),
+              // ),
+              AdaptativeTextField(
                 controller: _value,
-                //onSubmitted: (value) => _submitForm(),
-                onSubmitted: (_) => _submitForm(), // _ para ignorar o parametro
+                onSubmitted: (_) => _submitForm(),
                 keyboardType: TextInputType.numberWithOptions(
                   decimal: true, //Permitir decimal no ios
                 ),
-                decoration: InputDecoration(
-                  labelText: 'Valor (R\$)',
-                ),
+                label: 'Valor (R\$)',
               ),
+              // TextField(
+              //   // onChanged: (newValue) => value = newValue,
+              //   controller: _value,
+              //   //onSubmitted: (value) => _submitForm(),
+              //   onSubmitted: (_) => _submitForm(), // _ para ignorar o parametro
+              //   keyboardType: TextInputType.numberWithOptions(
+              //     decimal: true, //Permitir decimal no ios
+              //   ),
+              //   decoration: InputDecoration(
+              //     labelText: 'Valor (R\$)',
+              //   ),
+              // ),
               Container(
                 height: 70,
                 child: Row(
