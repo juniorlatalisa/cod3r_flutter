@@ -1,7 +1,7 @@
 import 'package:expenses/components/adaptative_button.dart';
+import 'package:expenses/components/adaptative_datepicker.dart';
 import 'package:expenses/components/adaptative_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime) onSubmit;
@@ -16,29 +16,15 @@ class _TransactionFormState extends State<TransactionForm> {
   final _title = TextEditingController();
   final _value = TextEditingController();
 
-  var _dataSelecionada = DateTime.now();
+  var _selectedDate = DateTime.now();
 
   _submitForm() {
     final title = this._title.text;
     final value = double.tryParse(this._value.text) ?? 0.0;
-    if (title.isEmpty || value < 0.01 || _dataSelecionada == null) {
+    if (title.isEmpty || value < 0.01 || _selectedDate == null) {
       return;
     }
-    widget.onSubmit(title, value, _dataSelecionada);
-  }
-
-  _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: _dataSelecionada,
-      firstDate: DateTime(2019),
-      lastDate: DateTime.now(),
-    ).then((datePicker) {
-      if (datePicker == null) {
-        return;
-      }
-      setState(() => _dataSelecionada = datePicker);
-    });
+    widget.onSubmit(title, value, _selectedDate);
   }
 
   @override
@@ -59,13 +45,6 @@ class _TransactionFormState extends State<TransactionForm> {
                 controller: _title,
                 label: 'Título',
               ),
-              // TextField(
-              //   // onChanged: (newValue) => title = newValue,
-              //   controller: _title,
-              //   decoration: InputDecoration(
-              //     labelText: 'Título',
-              //   ),
-              // ),
               AdaptativeTextField(
                 controller: _value,
                 onSubmitted: (_) => _submitForm(),
@@ -74,51 +53,16 @@ class _TransactionFormState extends State<TransactionForm> {
                 ),
                 label: 'Valor (R\$)',
               ),
-              // TextField(
-              //   // onChanged: (newValue) => value = newValue,
-              //   controller: _value,
-              //   //onSubmitted: (value) => _submitForm(),
-              //   onSubmitted: (_) => _submitForm(), // _ para ignorar o parametro
-              //   keyboardType: TextInputType.numberWithOptions(
-              //     decimal: true, //Permitir decimal no ios
-              //   ),
-              //   decoration: InputDecoration(
-              //     labelText: 'Valor (R\$)',
-              //   ),
-              // ),
-              Container(
-                height: 70,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        'Data selecionada:  ${DateFormat('dd/MM/y').format(_dataSelecionada)}',
-                      ),
-                    ),
-                    FlatButton(
-                      textColor: Theme.of(context).primaryColor,
-                      child: Text(
-                        'Selecionar data',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onPressed: _showDatePicker,
-                    )
-                  ],
-                ),
+              AdaptativeDatePicker(
+                initialDateTime: _selectedDate,
+                onChange: (datePicker) =>
+                    setState(() => _selectedDate = datePicker),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
                 AdaptativeButton(
                   label: 'Nova Transação',
                   onPresed: () => _submitForm(),
                 )
-                // RaisedButton(
-                //   child: Text('Nova Transação'),
-                //   color: Theme.of(context).primaryColor,
-                //   textColor: Theme.of(context).textTheme.button.color,
-                //   onPressed: () => _submitForm(),
-                // )
               ]),
             ],
           ),
