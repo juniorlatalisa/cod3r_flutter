@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime) onSubmit;
 
-  TransactionForm(this.onSubmit);
+  const TransactionForm(this.onSubmit);
 
   @override
   _TransactionFormState createState() => _TransactionFormState();
@@ -61,7 +61,7 @@ class _TransactionFormState extends State<TransactionForm> {
               Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
                 AdaptativeButton(
                   label: 'Nova Transação',
-                  onPresed: () => _submitForm(),
+                  onPresed: _submitForm,
                 )
               ]),
             ],

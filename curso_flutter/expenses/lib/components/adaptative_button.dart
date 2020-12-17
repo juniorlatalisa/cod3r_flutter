@@ -6,7 +6,7 @@ class AdaptativeButton extends StatelessWidget {
   final String label;
   final Function onPresed;
 
-  AdaptativeButton({this.label, this.onPresed});
+  const AdaptativeButton({this.label, this.onPresed});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class AdaptativeButton extends StatelessWidget {
             color: theme.primaryColor,
             child: Text(label),
             onPressed: onPresed,
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
           )
         : RaisedButton(
             color: theme.primaryColor,

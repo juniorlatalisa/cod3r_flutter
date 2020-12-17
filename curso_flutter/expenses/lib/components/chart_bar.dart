@@ -6,7 +6,10 @@ class ChartBar extends StatelessWidget {
   final double value;
   final double percentege;
 
-  ChartBar(this.label, this.value, this.percentege);
+  /* 
+  O construtor ser const, quando possivel, ajuda a otimização em tempo de compilação 
+  */
+  const ChartBar(this.label, this.value, this.percentege);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class ChartBar extends StatelessWidget {
                       color: Colors.grey,
                       width: 1.0,
                     ),
-                    color: Color.fromRGBO(220, 220, 220, 1),
+                    color: const Color.fromRGBO(220, 220, 220, 1),
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),

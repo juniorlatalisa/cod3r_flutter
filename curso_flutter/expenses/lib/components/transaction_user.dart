@@ -97,7 +97,7 @@ class _TransactionsUserState extends State<TransactionsUser> {
         _openTransactionFormModal,
       ),
     ];
-    final _title = Text('Despessas pessoais');
+    const _title = const Text('Despessas pessoais');
     final PreferredSizeWidget _appBar = isIOSPlatform
         ? CupertinoNavigationBar(
             middle: _title,
@@ -127,17 +127,6 @@ class _TransactionsUserState extends State<TransactionsUser> {
     final _body = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     Text('Exibir gráfico'),
-        //     Switch.adaptive(
-        //         activeColor: Theme.of(context).accentColor,
-        //         value: showGrafico,
-        //         onChanged: (newValue) =>
-        //             setState(() => showGrafico = newValue))
-        //   ],
-        // ),
         if (showGrafico || !_isLandscape) _chart,
         if (!showGrafico || !_isLandscape) _list,
       ],
@@ -156,7 +145,7 @@ class _TransactionsUserState extends State<TransactionsUser> {
             appBar: _appBar,
             body: _bodyPage,
             floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               onPressed: _openTransactionFormModal,
             ),
             floatingActionButtonLocation:
