@@ -18,6 +18,24 @@ class _TransactionFormState extends State<TransactionForm> {
 
   var _selectedDate = DateTime.now();
 
+  @override
+  void initState() {
+    //Chamado uma unica vez na inicialização do estado
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant TransactionForm oldWidget) {
+    //Chamado na mudança do componente
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    //Chamado quando o componente deixa de estar visivel.
+    super.dispose();
+  }
+
   _submitForm() {
     final title = this._title.text;
     final value = double.tryParse(this._value.text) ?? 0.0;
