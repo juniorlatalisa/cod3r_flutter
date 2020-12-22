@@ -5,12 +5,23 @@ import 'package:flutter/material.dart';
 
 final isIOSPlatform = !Platform.isIOS;
 
-main() => runApp(ExpensesApp());
+// main() => runApp(const ExpensesApp());
+
+main(List<String> args) {
+  const myHomePage = MyHomePage();
+  runApp(const ExpensesApp(myHomePage));
+  WidgetsBinding.instance.addObserver(myHomePage);
+  myHomePage.didChangeAppLifecycleState(AppLifecycleState.resumed);
+}
 
 class ExpensesApp extends StatelessWidget {
+  final StatelessWidget myHomePage;
+
+  const ExpensesApp(this.myHomePage);
+
   @override
   Widget build(BuildContext context) => MaterialApp(
-        home: MyHomePage(),
+        home: myHomePage,
         theme: ThemeData(
           primarySwatch: Colors.purple,
           accentColor: Colors.amber,
@@ -38,7 +49,9 @@ class ExpensesApp extends StatelessWidget {
       );
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatelessWidget with WidgetsBindingObserver {
+  const MyHomePage();
+
   // @override
   // Widget build(BuildContext context) {
   //   SystemChrome.setPreferredOrientations([
@@ -46,6 +59,12 @@ class MyHomePage extends StatelessWidget {
   //   ]);
   //   return TransactionsUser();
   // }
+
   @override
   Widget build(BuildContext context) => TransactionsUser();
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print('The app state is $state');
+  }
 }
