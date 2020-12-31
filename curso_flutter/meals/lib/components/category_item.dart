@@ -13,9 +13,13 @@ class CategoryItem extends StatelessWidget {
     final theme = Theme.of(context);
     final navigator = Navigator.of(context);
     return InkWell(
-      onTap: () => navigator.push(MaterialPageRoute(
-        builder: (_) => CategoriesMealScreeen(category),
-      )),
+      // onTap: () => navigator.push(MaterialPageRoute(
+      //   builder: (_) => CategoriesMealScreeen(category),
+      // )),
+      onTap: () => navigator.pushNamed(
+        '/categories-meals',
+        arguments: category,
+      ),
       splashColor: theme.primaryColor,
       borderRadius: borderRadius,
       child: Container(
