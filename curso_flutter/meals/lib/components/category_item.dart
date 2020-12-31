@@ -11,15 +11,12 @@ class CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(15);
     final theme = Theme.of(context);
-    final navigator = Navigator.of(context);
+    // final navigator = Navigator.of(context);
     return InkWell(
       // onTap: () => navigator.push(MaterialPageRoute(
       //   builder: (_) => CategoriesMealScreeen(category),
       // )),
-      onTap: () => navigator.pushNamed(
-        AppRoutes.CATEGORIES_MEALS,
-        arguments: category,
-      ),
+      onTap: () => AppRoutes.categoriesMealNavigate(context, category),
       splashColor: theme.primaryColor,
       borderRadius: borderRadius,
       child: Container(

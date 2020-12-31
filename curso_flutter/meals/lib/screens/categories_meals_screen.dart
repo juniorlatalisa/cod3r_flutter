@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meals/models/category.dart';
 
 class CategoriesMealScreeen extends StatelessWidget {
-  // final Category category;
-
-  // const CategoriesMealScreeen(this.category);
+  const CategoriesMealScreeen();
 
   @override
   Widget build(BuildContext context) {
