@@ -14,7 +14,7 @@ class CategoryItem extends StatelessWidget {
     final navigator = Navigator.of(context);
     return InkWell(
       onTap: () => navigator.push(MaterialPageRoute(
-        builder: (_) => CategoriesMealScreeen(),
+        builder: (_) => CategoriesMealScreeen(category),
       )),
       splashColor: theme.primaryColor,
       borderRadius: borderRadius,
