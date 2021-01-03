@@ -22,6 +22,14 @@ class MyApp extends StatelessWidget {
       // home: CategoriesScreen(),
       initialRoute: AppRoutes.HOME, //Opcional
       routes: AppRoutes.routes,
+      // onGenerateRoute: (settings) {    //Método chamado caso a rota não for
+      //   if (settings.name == '/') {}   //encotrada em routes
+      //   return null;                   //Permitir geração de rotas dinamicas
+      // },
+      // onUnknownRoute: (settings) {     //Método chamado caso a rota não for
+      //   if (settings.name == '/') {}   //encontrada nem em routes e nem em
+      //   return null;                   //onGenerateRoute
+      // },                               //Exemplor: 404
     );
   }
 }
