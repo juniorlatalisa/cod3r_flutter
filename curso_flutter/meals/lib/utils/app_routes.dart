@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:meals/models/category.dart';
 import 'package:meals/models/meal.dart';
 import 'package:meals/screens/categories_meals_screen.dart';
-import 'package:meals/screens/categories_screen.dart';
 import 'package:meals/screens/meal_detail_screen.dart';
+import 'package:meals/screens/tabs_screen.dart';
 
 class AppRoutes {
-  static const _homeScreen = CategoriesScreen();
+  // static const _homeScreen = CategoriesScreen();
   static const _categoriesMealScreeen = CategoriesMealScreeen();
   static const _mealDetailScreen = MealDetailScreen();
 
@@ -33,7 +33,7 @@ class AppRoutes {
       );
 
   static final Map<String, WidgetBuilder> routes = {
-    HOME: (_) => _homeScreen,
+    HOME: (_) => TabsScreen(),
     CATEGORIES_MEALS: (_) => _categoriesMealScreeen,
     MEAL_DETAIL: (_) => _mealDetailScreen,
   };
