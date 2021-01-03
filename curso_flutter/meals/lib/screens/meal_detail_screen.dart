@@ -4,6 +4,28 @@ import 'package:meals/models/meal.dart';
 class MealDetailScreen extends StatelessWidget {
   const MealDetailScreen();
 
+  Widget _createSectionTitle(ThemeData theme, title) => Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        child: Text(
+          title,
+          style: theme.textTheme.headline6,
+        ),
+      );
+
+  Widget _createSectionContainer(Widget child, {double height = 200}) =>
+      Container(
+        width: 330,
+        height: height,
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey),
+        ),
+        child: child,
+      );
+
   @override
   Widget build(BuildContext context) {
     final Meal meal = ModalRoute.of(context).settings.arguments;
@@ -12,35 +34,22 @@ class MealDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(meal.title),
       ),
-      body: Column(children: <Widget>[
-        Container(
-          height: 300,
-          width: double.infinity,
-          child: Image.network(
-            meal.imageUrl,
-            fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Column(children: <Widget>[
+          Container(
+            height: 300,
+            width: double.infinity,
+            child: Image.network(
+              meal.imageUrl,
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          child: Text(
-            'Ingredientes',
-            style: theme.textTheme.headline6,
-          ),
-        ),
-        Container(
-          width: 300,
-          height: 200,
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.grey),
-          ),
-          child: ListView.builder(
+          //Ingredientes
+          _createSectionTitle(theme, 'Ingredientes'),
+          _createSectionContainer(ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
             itemCount: meal.ingredients.length,
-            itemBuilder: (context, index) => Card(
+            itemBuilder: (_, index) => Card(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 5,
@@ -50,9 +59,29 @@ class MealDetailScreen extends StatelessWidget {
               ),
               color: theme.accentColor,
             ),
+          )),
+          //Passos
+          _createSectionTitle(theme, 'Passos'),
+          _createSectionContainer(
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: meal.steps.length,
+              itemBuilder: (_, index) => Column(
+                children: <Widget>[
+                  ListTile(
+                    leading: CircleAvatar(
+                      child: Text('${index + 1}'),
+                    ),
+                    title: Text(meal.steps[index]),
+                  ),
+                  const Divider(),
+                ],
+              ),
+            ),
+            height: meal.steps.length * 75.0,
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }
