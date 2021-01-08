@@ -17,7 +17,7 @@ class AppRoutes {
   static const SETTINGS = '/settings';
   static const HOME = '/';
 
-  static void categoriesMealNavigate(
+  static Future categoriesMealNavigate(
     final BuildContext context,
     final Category category,
   ) =>
@@ -26,7 +26,7 @@ class AppRoutes {
         arguments: category,
       );
 
-  static void mealDetailNavigate(
+  static Future mealDetailNavigate(
     final BuildContext context,
     final Meal meal,
   ) =>
@@ -35,7 +35,7 @@ class AppRoutes {
         arguments: meal,
       );
 
-  static void settingsNavigate(final BuildContext context) =>
+  static Future settingsNavigate(final BuildContext context) =>
       Navigator.of(context).pushNamed(
         SETTINGS,
         arguments: null,

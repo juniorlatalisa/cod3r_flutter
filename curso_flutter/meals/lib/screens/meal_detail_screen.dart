@@ -30,6 +30,7 @@ class MealDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Meal meal = ModalRoute.of(context).settings.arguments;
     final theme = Theme.of(context);
+    final navigate = Navigator.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
@@ -81,6 +82,10 @@ class MealDetailScreen extends StatelessWidget {
             height: meal.steps.length * 75.0,
           ),
         ]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.star),
+        onPressed: () => navigate.pop(meal.title),
       ),
     );
   }

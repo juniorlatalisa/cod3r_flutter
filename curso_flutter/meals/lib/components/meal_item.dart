@@ -10,7 +10,9 @@ class MealItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => AppRoutes.mealDetailNavigate(context, meal),
+      onTap: () => AppRoutes.mealDetailNavigate(context, meal).then((value) =>
+          print(
+              value == null ? 'Sem resultado' : 'O nome da refeição é $value')),
       child: Card(
         elevation: 4,
         margin: const EdgeInsets.all(10),
