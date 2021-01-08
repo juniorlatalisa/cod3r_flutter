@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:meals/utils/app_routes.dart';
 
 class MainDrawer extends StatelessWidget {
-  Widget _createItem(IconData icon, String label) {
+  Widget _createItem(IconData icon, String label, GestureTapCallback onTap) {
     return ListTile(
       leading: Icon(icon, size: 26),
       title: Text(label,
@@ -10,13 +11,14 @@ class MainDrawer extends StatelessWidget {
             fontFamily: 'RobotoCondensed',
             fontWeight: FontWeight.bold,
           )),
-      onTap: () => print(label),
+      onTap: onTap,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final navigate = Navigator.of(context);
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -36,8 +38,16 @@ class MainDrawer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          _createItem(Icons.restaurant, 'Refeições'),
-          _createItem(Icons.settings, 'Configurações'),
+          _createItem(
+            Icons.restaurant,
+            'Refeições',
+            () => navigate.pushNamed(AppRoutes.HOME),
+          ),
+          _createItem(
+            Icons.settings,
+            'Configurações',
+            () => navigate.pushNamed(AppRoutes.SETTINGS),
+          ),
         ],
       ),
     );
