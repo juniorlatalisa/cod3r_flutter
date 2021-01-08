@@ -26,7 +26,7 @@ class _TabsScreenState extends State<TabsScreen> {
             ? 'Lista de Categorias'
             : 'Meus Favoritos'),
       ),
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) => setState(() => _selectedScreenIndex = index),
         backgroundColor: theme.primaryColor,

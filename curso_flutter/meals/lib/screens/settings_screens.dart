@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meals/components/main_drawer.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen();
@@ -10,6 +11,7 @@ class SettingsScreen extends StatelessWidget {
         title: Text('Configurações'),
       ),
       body: Text('Configurações'),
+      drawer: const MainDrawer(),
     );
   }
 }
