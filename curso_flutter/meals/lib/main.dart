@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:meals/data/dummy_data.dart';
+import 'package:meals/models/meal.dart';
+import 'package:meals/screens/categories_meals_screen.dart';
+import 'package:meals/screens/meal_detail_screen.dart';
+import 'package:meals/screens/settings_screens.dart';
+import 'package:meals/screens/tabs_screen.dart';
 import 'package:meals/utils/app_routes.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  List<Meal> _avaliableMeal = DUMMY_MEALS;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,7 +34,13 @@ class MyApp extends StatelessWidget {
               )),
       // home: CategoriesScreen(),
       initialRoute: AppRoutes.HOME, //Opcional
-      routes: AppRoutes.routes,
+      routes: {
+        AppRoutes.HOME: (_) => TabsScreen(),
+        AppRoutes.CATEGORIES_MEALS: (_) =>
+            CategoriesMealScreeen(_avaliableMeal),
+        AppRoutes.MEAL_DETAIL: (_) => const MealDetailScreen(),
+        AppRoutes.SETTINGS: (_) => const SettingsScreen(),
+      },
       // onGenerateRoute: (settings) {    //Método chamado caso a rota não for
       //   if (settings.name == '/') {}   //encotrada em routes
       //   return null;                   //Permitir geração de rotas dinamicas
