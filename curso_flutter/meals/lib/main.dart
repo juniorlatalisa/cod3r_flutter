@@ -18,6 +18,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _settings = Settings();
   List<Meal> _avaliableMeal = DUMMY_MEALS;
+  List<Meal> _favoriteMeal = [];
 
   void _filterMeals(Settings settings) {
     setState(() {
@@ -32,6 +33,12 @@ class _MyAppState extends State<MyApp> {
             filterVegetarian);
       }).toList();
     });
+  }
+
+  void _toggleFavorite(Meal meal) {
+    setState(() => _favoriteMeal.contains(meal)
+        ? _favoriteMeal.remove(meal)
+        : _favoriteMeal.add(meal));
   }
 
   @override
@@ -52,10 +59,11 @@ class _MyAppState extends State<MyApp> {
       // home: CategoriesScreen(),
       initialRoute: AppRoutes.HOME, //Opcional
       routes: {
-        AppRoutes.HOME: (_) => TabsScreen(),
+        AppRoutes.HOME: (_) => TabsScreen(_favoriteMeal),
         AppRoutes.CATEGORIES_MEALS: (_) =>
             CategoriesMealScreeen(_avaliableMeal),
-        AppRoutes.MEAL_DETAIL: (_) => const MealDetailScreen(),
+        AppRoutes.MEAL_DETAIL: (_) => MealDetailScreen(
+            _toggleFavorite, (meal) => _favoriteMeal.contains(meal)),
         AppRoutes.SETTINGS: (_) => SettingsScreen(_settings, _filterMeals),
       },
       // onGenerateRoute: (settings) {    //Método chamado caso a rota não for

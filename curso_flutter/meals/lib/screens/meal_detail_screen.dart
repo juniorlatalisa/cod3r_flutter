@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
-  const MealDetailScreen();
+  const MealDetailScreen(this.onToggleFavorite, this.isFavorite);
+
+  final void Function(Meal) onToggleFavorite;
+  final bool Function(Meal) isFavorite;
 
   Widget _createSectionTitle(ThemeData theme, title) => Container(
         margin: const EdgeInsets.symmetric(vertical: 10),
@@ -30,7 +33,7 @@ class MealDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Meal meal = ModalRoute.of(context).settings.arguments;
     final theme = Theme.of(context);
-    final navigate = Navigator.of(context);
+    // final navigate = Navigator.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
@@ -84,8 +87,10 @@ class MealDetailScreen extends StatelessWidget {
         ]),
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.star),
-        onPressed: () => navigate.pop(meal.title),
+        child: isFavorite(meal)
+            ? const Icon(Icons.star)
+            : const Icon(Icons.star_border),
+        onPressed: () => onToggleFavorite(meal),
       ),
     );
   }
