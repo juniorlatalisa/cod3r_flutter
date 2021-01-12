@@ -16,6 +16,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _settings = Settings();
   List<Meal> _avaliableMeal = DUMMY_MEALS;
 
   void _filterMeals(Settings settings) {
@@ -55,7 +56,7 @@ class _MyAppState extends State<MyApp> {
         AppRoutes.CATEGORIES_MEALS: (_) =>
             CategoriesMealScreeen(_avaliableMeal),
         AppRoutes.MEAL_DETAIL: (_) => const MealDetailScreen(),
-        AppRoutes.SETTINGS: (_) => SettingsScreen(_filterMeals),
+        AppRoutes.SETTINGS: (_) => SettingsScreen(_settings, _filterMeals),
       },
       // onGenerateRoute: (settings) {    //Método chamado caso a rota não for
       //   if (settings.name == '/') {}   //encotrada em routes
