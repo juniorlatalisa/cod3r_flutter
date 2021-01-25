@@ -11,4 +11,9 @@ class Products with ChangeNotifier {
     _items.add(product);
     notifyListeners();
   }
+
+  void toggleFavorite(Product product) {
+    product.isFavorite = !product.isFavorite;
+    notifyListeners();
+  }
 }
