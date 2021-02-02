@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/providers/products.dart';
 import 'package:shop/utils/app_routes.dart';
 
 class ProductItem extends StatelessWidget {
+  final Product product;
+
+  const ProductItem(this.product);
+
   @override
   Widget build(BuildContext context) {
-    final Product product = Provider.of(context, listen: false);
+    final Products products = Provider.of(context);
     final theme = Theme.of(context);
     final navigator = Navigator.of(context);
     return ClipRRect(
@@ -26,13 +31,11 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
-          leading: Consumer<Product>(
-            builder: (ctx, prd, _) => IconButton(
-              icon:
-                  Icon(prd.isFavorite ? Icons.favorite : Icons.favorite_border),
-              color: theme.accentColor,
-              onPressed: () => prd.toggleFavorite(),
-            ),
+          leading: IconButton(
+            icon: Icon(
+                product.isFavorite ? Icons.favorite : Icons.favorite_border),
+            color: theme.accentColor,
+            onPressed: () => products.toggleFavorite(product),
           ),
           title: Text(
             product.title,
@@ -41,10 +44,7 @@ class ProductItem extends StatelessWidget {
           trailing: IconButton(
             icon: const Icon(Icons.shopping_cart),
             color: theme.accentColor,
-            onPressed: () =>
-                //Pensei que não funcionaria
-                product.toggleFavorite(),
-            // Provider.of<Product>(context, listen: false).toggleFavorite(),
+            onPressed: () => print(product.id),
           ),
         ),
       ),
