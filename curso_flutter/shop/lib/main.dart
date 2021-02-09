@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Minha Loja',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.purple,
           accentColor: Colors.deepOrange,
