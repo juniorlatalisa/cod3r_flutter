@@ -9,6 +9,12 @@ class Cart with ChangeNotifier {
 
   int get size => _items.length;
 
+  double get totalAmount => (_items.isEmpty)
+      ? 0.0
+      : _items.entries
+          .map((i) => i.value.product.price * i.value.quantity)
+          .reduce((total, subtotal) => total + subtotal);
+
   CartItem add(Product product) {
     final retorno = _items.containsKey(product.id)
         ? _items.update(product.id,
