@@ -27,9 +27,7 @@ class Cart with ChangeNotifier {
 
   CartItem remove(String productId) {
     final item = _items.remove(productId);
-    if (item != null) {
-      notifyListeners();
-    }
+    notifyListeners();
     return item;
   }
 }
