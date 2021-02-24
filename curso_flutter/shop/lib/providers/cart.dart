@@ -24,4 +24,12 @@ class Cart with ChangeNotifier {
     notifyListeners();
     return retorno;
   }
+
+  CartItem remove(String productId) {
+    final item = _items.remove(productId);
+    if (item != null) {
+      notifyListeners();
+    }
+    return item;
+  }
 }
