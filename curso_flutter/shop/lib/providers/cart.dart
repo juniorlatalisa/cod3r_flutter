@@ -30,4 +30,9 @@ class Cart with ChangeNotifier {
     notifyListeners();
     return item;
   }
+
+  void clear() {
+    _items.clear();
+    notifyListeners();
+  }
 }
