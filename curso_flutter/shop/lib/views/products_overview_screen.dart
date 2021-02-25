@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop/providers/cart.dart';
 import 'package:shop/providers/products.dart';
 import 'package:shop/utils/app_routes.dart';
+import 'package:shop/widgets/app_drawer.dart';
 import 'package:shop/widgets/badge.dart';
 import 'package:shop/widgets/product_grid.dart';
 
@@ -12,6 +13,8 @@ enum FilterOptions {
 }
 
 class ProductOverviewScreen extends StatelessWidget {
+  const ProductOverviewScreen();
+
   @override
   Widget build(BuildContext context) {
     final Products products = Provider.of(context);
@@ -50,6 +53,7 @@ class ProductOverviewScreen extends StatelessWidget {
         ],
       ),
       body: ProductGrid(),
+      drawer: AppDrawer(),
     );
   }
 }
