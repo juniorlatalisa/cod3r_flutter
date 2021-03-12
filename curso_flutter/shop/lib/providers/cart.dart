@@ -25,6 +25,21 @@ class Cart with ChangeNotifier {
     return retorno;
   }
 
+  CartItem undo(String productId) {
+    if (!_items.containsKey(productId)) {
+      return null;
+    }
+    var item = _items.remove(productId);
+    if (item.quantity == 1) {
+      notifyListeners();
+      return null;
+    }
+    item = _items.putIfAbsent(productId,
+        () => CartItem(product: item.product, quantity: item.quantity - 1));
+    notifyListeners();
+    return item;
+  }
+
   CartItem remove(String productId) {
     final item = _items.remove(productId);
     notifyListeners();
