@@ -35,6 +35,10 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   void _saveForm() {
+    if (!_form.currentState.validate()) {
+      print('fail');
+      return;
+    }
     _form.currentState.save();
     final product = Product(
       id: Random().nextDouble().toString(),
@@ -70,6 +74,10 @@ class _ProductScreenState extends State<ProductScreen> {
                 onFieldSubmitted: (_) =>
                     FocusScope.of(context).requestFocus(focusPreco),
                 onSaved: (newValue) => _formData['title'] = newValue,
+                validator: (newValue) =>
+                    (newValue == null || newValue.trim().isEmpty)
+                        ? 'Informe um valor válido'
+                        : null,
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Preço'),
@@ -79,6 +87,10 @@ class _ProductScreenState extends State<ProductScreen> {
                     FocusScope.of(context).requestFocus(focusDescricao),
                 focusNode: focusPreco,
                 onSaved: (newValue) => _formData['price'] = newValue,
+                validator: (newValue) =>
+                    (newValue == null || newValue.trim().isEmpty)
+                        ? 'Informe um valor válido'
+                        : null,
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Descrição'),
