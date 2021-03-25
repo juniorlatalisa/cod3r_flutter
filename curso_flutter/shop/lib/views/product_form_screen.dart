@@ -10,12 +10,23 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   final focusPreco = FocusNode();
   final focusDescricao = FocusNode();
+  final focusURL = FocusNode();
+  final imageURLController = TextEditingController();
 
   @override
   void dispose() {
     focusPreco.dispose();
     focusDescricao.dispose();
+    focusURL.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    focusURL.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -45,9 +56,43 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Descrição'),
+                textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.multiline,
                 focusNode: focusDescricao,
                 maxLines: 3,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Expanded(
+                    child: TextFormField(
+                      decoration: const InputDecoration(labelText: 'URL'),
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.url,
+                      controller: imageURLController,
+                      focusNode: focusURL,
+                    ),
+                  ),
+                  Container(
+                    height: 100,
+                    width: 100,
+                    margin: EdgeInsets.only(
+                      top: 8,
+                      left: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1),
+                    ),
+                    alignment: Alignment.center,
+                    child: imageURLController.text.isEmpty
+                        ? Text('Informe a URL')
+                        : FittedBox(
+                            child: Image.network(
+                            imageURLController.text,
+                            fit: BoxFit.cover,
+                          )),
+                  )
+                ],
               ),
             ],
           ),
