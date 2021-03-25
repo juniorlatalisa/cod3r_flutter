@@ -6,6 +6,8 @@ class Products with ChangeNotifier {
   List<Product> _items = dummyProduct;
   bool _showFavoriteOnly = false;
 
+  int get size => _items.length;
+
   List<Product> get items => _showFavoriteOnly
       ? _items.where((product) => product.isFavorite).toList()
       : [..._items];

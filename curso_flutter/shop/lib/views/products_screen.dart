@@ -1,0 +1,33 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/providers/products.dart';
+import 'package:shop/widgets/app_drawer.dart';
+
+class ProductsScreen extends StatelessWidget {
+  const ProductsScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    final products = Provider.of<Products>(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Produtos'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => print(this),
+          )
+        ],
+      ),
+      drawer: AppDrawer(),
+      body: Padding(
+        padding: EdgeInsets.all(8),
+        child: ListView.builder(
+          itemCount: products.size,
+          itemBuilder: (ctx, i) => Text('Teste $i'),
+        ),
+      ),
+    );
+  }
+}
