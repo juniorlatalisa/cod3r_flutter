@@ -30,8 +30,14 @@ class _ProductScreenState extends State<ProductScreen> {
   void initState() {
     super.initState();
     focusURL.addListener(() {
-      setState(() {});
+      if (_isValidImageURL(imageURLController.text)) {
+        setState(() {});
+      }
     });
+  }
+
+  bool _isValidImageURL(String url) {
+    return url != null && url.startsWith('http');
   }
 
   void _saveForm() {
@@ -107,11 +113,14 @@ class _ProductScreenState extends State<ProductScreen> {
                     child: TextFormField(
                       decoration: const InputDecoration(labelText: 'URL'),
                       onSaved: (newValue) => _formData['imageUrl'] = newValue,
+                      onFieldSubmitted: (value) => _saveForm(),
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.url,
                       controller: imageURLController,
                       focusNode: focusURL,
-                      onFieldSubmitted: (value) => _saveForm(),
+                      validator: (value) => (_isValidImageURL(value))
+                          ? null
+                          : 'Informe uma URL válida.',
                     ),
                   ),
                   Container(
