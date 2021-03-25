@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shop/models/product.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen();
@@ -12,6 +15,8 @@ class _ProductScreenState extends State<ProductScreen> {
   final focusDescricao = FocusNode();
   final focusURL = FocusNode();
   final imageURLController = TextEditingController();
+  final _form = GlobalKey<FormState>();
+  final _formData = Map<String, String>();
 
   @override
   void dispose() {
@@ -29,15 +34,34 @@ class _ProductScreenState extends State<ProductScreen> {
     });
   }
 
+  void _saveForm() {
+    _form.currentState.save();
+    final product = Product(
+      id: Random().nextDouble().toString(),
+      title: _formData['title'],
+      description: _formData['description'],
+      price: double.parse(_formData['price']),
+      imageUrl: _formData['imageUrl'],
+    );
+    print(product.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Formulário Produto'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: () => _saveForm(),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
+          key: _form,
           child: ListView(
             children: <Widget>[
               TextFormField(
@@ -45,6 +69,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) =>
                     FocusScope.of(context).requestFocus(focusPreco),
+                onSaved: (newValue) => _formData['title'] = newValue,
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Preço'),
@@ -53,9 +78,11 @@ class _ProductScreenState extends State<ProductScreen> {
                 onFieldSubmitted: (_) =>
                     FocusScope.of(context).requestFocus(focusDescricao),
                 focusNode: focusPreco,
+                onSaved: (newValue) => _formData['price'] = newValue,
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Descrição'),
+                onSaved: (newValue) => _formData['description'] = newValue,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.multiline,
                 focusNode: focusDescricao,
@@ -67,10 +94,12 @@ class _ProductScreenState extends State<ProductScreen> {
                   Expanded(
                     child: TextFormField(
                       decoration: const InputDecoration(labelText: 'URL'),
+                      onSaved: (newValue) => _formData['imageUrl'] = newValue,
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.url,
                       controller: imageURLController,
                       focusNode: focusURL,
+                      onFieldSubmitted: (value) => _saveForm(),
                     ),
                   ),
                   Container(
