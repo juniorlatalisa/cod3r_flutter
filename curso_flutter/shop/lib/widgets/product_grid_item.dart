@@ -6,10 +6,10 @@ import 'package:shop/providers/cart.dart';
 import 'package:shop/providers/products.dart';
 import 'package:shop/utils/app_routes.dart';
 
-class ProductItem extends StatelessWidget {
+class ProductGridItem extends StatelessWidget {
   final Product product;
 
-  const ProductItem(this.product);
+  const ProductGridItem(this.product);
 
   @override
   Widget build(BuildContext context) {
