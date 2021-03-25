@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/providers/products.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen();
@@ -53,7 +55,8 @@ class _ProductScreenState extends State<ProductScreen> {
       price: double.parse(_formData['price']),
       imageUrl: _formData['imageUrl'],
     );
-    print(product.id);
+    Provider.of<Products>(context, listen: false).add(product);
+    Navigator.of(context).pop(product);
   }
 
   @override
