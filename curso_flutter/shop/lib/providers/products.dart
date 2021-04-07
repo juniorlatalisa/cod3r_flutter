@@ -26,6 +26,18 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
+  void update(Product product) {
+    if (product == null || product.id == null) {
+      return;
+    }
+    final index = _items.indexWhere((p) => p.id == product.id);
+    if (index < 0) {
+      return;
+    }
+    _items[index] = product;
+    notifyListeners();
+  }
+
   void toggleFavorite(Product product) {
     product.isFavorite = !product.isFavorite;
     notifyListeners();

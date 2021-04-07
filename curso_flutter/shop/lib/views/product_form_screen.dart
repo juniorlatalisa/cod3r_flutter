@@ -38,6 +38,20 @@ class _ProductScreenState extends State<ProductScreen> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_formData.isEmpty) {
+      final Product product = ModalRoute.of(context).settings.arguments;
+      _formData['id'] = product.id;
+      _formData['title'] = product.title;
+      _formData['description'] = product.description;
+      _formData['imageUrl'] = product.imageUrl;
+      _formData['price'] = product.price.toStringAsPrecision(2);
+      imageURLController.text = product.imageUrl;
+    }
+  }
+
   bool _isValidImageURL(String url) {
     return url != null && url.startsWith('http');
   }
@@ -48,14 +62,21 @@ class _ProductScreenState extends State<ProductScreen> {
       return;
     }
     _form.currentState.save();
+    bool novo = !_formData.containsKey('id');
+
     final product = Product(
-      id: Random().nextDouble().toString(),
+      id: novo ? Random().nextDouble().toString() : _formData['id'],
       title: _formData['title'],
       description: _formData['description'],
       price: double.parse(_formData['price']),
       imageUrl: _formData['imageUrl'],
     );
-    Provider.of<Products>(context, listen: false).add(product);
+    final products = Provider.of<Products>(context, listen: false);
+    if (novo) {
+      products.add(product);
+    } else {
+      products.update(product);
+    }
     Navigator.of(context).pop(product);
   }
 
@@ -78,6 +99,7 @@ class _ProductScreenState extends State<ProductScreen> {
           child: ListView(
             children: <Widget>[
               TextFormField(
+                initialValue: _formData['title'],
                 decoration: const InputDecoration(labelText: 'Título'),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) =>
@@ -89,6 +111,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         : null,
               ),
               TextFormField(
+                initialValue: _formData['price'],
                 decoration: const InputDecoration(labelText: 'Preço'),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 textInputAction: TextInputAction.next,
@@ -102,6 +125,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         : null,
               ),
               TextFormField(
+                initialValue: _formData['description'],
                 decoration: const InputDecoration(labelText: 'Descrição'),
                 onSaved: (newValue) => _formData['description'] = newValue,
                 textInputAction: TextInputAction.next,
@@ -114,6 +138,8 @@ class _ProductScreenState extends State<ProductScreen> {
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
+                      //Não pode ser usado devido ao 'controller'
+                      //initialValue: _formData['imageUrl'],
                       decoration: const InputDecoration(labelText: 'URL'),
                       onSaved: (newValue) => _formData['imageUrl'] = newValue,
                       onFieldSubmitted: (value) => _saveForm(),
