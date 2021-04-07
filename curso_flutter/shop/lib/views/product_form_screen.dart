@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -67,7 +65,7 @@ class _ProductScreenState extends State<ProductScreen> {
     bool novo = !_formData.containsKey('id');
 
     final product = Product(
-      id: novo ? Random().nextDouble().toString() : _formData['id'],
+      id: novo ? null : _formData['id'],
       title: _formData['title'],
       description: _formData['description'],
       price: double.parse(_formData['price']),
@@ -167,11 +165,14 @@ class _ProductScreenState extends State<ProductScreen> {
                     alignment: Alignment.center,
                     child: imageURLController.text.isEmpty
                         ? Text('Informe a URL')
-                        : FittedBox(
+                        : SizedBox(
+                            height: 200,
+                            width: 200,
                             child: Image.network(
-                            imageURLController.text,
-                            fit: BoxFit.cover,
-                          )),
+                              imageURLController.text,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                   )
                 ],
               ),

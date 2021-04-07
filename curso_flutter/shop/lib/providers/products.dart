@@ -29,17 +29,32 @@ class Products with ChangeNotifier {
     //https://http2.mlstatic.com/D_NQ_NP_798682-MLB40362410711_012020-O.webp
     const url =
         'https://flutter-cod3r-626b9-default-rtdb.firebaseio.com/products.json';
-    http.post(url,
-        body: json.encode({
-          // 'id': product.id,
-          'title': product.title,
-          'description': product.description,
-          'price': product.price,
-          'imageUrl': product.imageUrl,
-          'isFavorite': product.isFavorite,
-        }));
-    _items.add(product);
-    notifyListeners();
+    http
+        .post(
+          url,
+          body: json.encode({
+            // 'id': product.id,
+            'title': product.title,
+            'description': product.description,
+            'price': product.price,
+            'imageUrl': product.imageUrl,
+            'isFavorite': product.isFavorite,
+          }),
+        )
+        .then((response) => _add(product, response));
+  }
+
+  void _add(Product product, http.Response response) {
+    if (response.statusCode == 200) {
+      final id = json.decode(response.body)['name'];
+      _items.add(Product(
+          id: id,
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl));
+      notifyListeners();
+    }
   }
 
   void delete(Product product) {
