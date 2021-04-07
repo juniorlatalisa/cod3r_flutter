@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -77,9 +79,24 @@ class _ProductScreenState extends State<ProductScreen> {
       imageUrl: _formData['imageUrl'],
     );
     final products = Provider.of<Products>(context, listen: false);
+    _loading(true);
     if (novo) {
-      _loading(true);
-      products.add(product).then((value) => Navigator.of(context).pop(product));
+      products
+          .add(product)
+          .catchError((error) => showDialog<bool>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                    title: Text(product.title),
+                    content: Text((error as SocketException).message),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('OK'),
+                        onPressed: () => Navigator.of(ctx).pop(false),
+                      ),
+                    ]),
+              ))
+          .then((value) =>
+              value ? Navigator.of(context).pop(product) : _loading(false));
     } else {
       products.update(product);
       Navigator.of(context).pop(product);
