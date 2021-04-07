@@ -26,6 +26,15 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
+  void delete(Product product) {
+    final index = _items.indexWhere((p) => p.id == product.id);
+    if (index < 0) {
+      return;
+    }
+    _items.removeAt(index);
+    notifyListeners();
+  }
+
   void update(Product product) {
     if (product == null || product.id == null) {
       return;
