@@ -24,12 +24,12 @@ class Products with ChangeNotifier {
     }
   }
 
-  void add(Product product) {
+  Future<bool> add(Product product) {
     //https://console.firebase.google.com/project/flutter-cod3r-626b9/database/flutter-cod3r-626b9-default-rtdb/data
     //https://http2.mlstatic.com/D_NQ_NP_798682-MLB40362410711_012020-O.webp
     const url =
         'https://flutter-cod3r-626b9-default-rtdb.firebaseio.com/products.json';
-    http
+    return http
         .post(
           url,
           body: json.encode({
@@ -44,7 +44,7 @@ class Products with ChangeNotifier {
         .then((response) => _add(product, response));
   }
 
-  void _add(Product product, http.Response response) {
+  bool _add(Product product, http.Response response) {
     if (response.statusCode == 200) {
       final id = json.decode(response.body)['name'];
       _items.add(Product(
@@ -54,7 +54,9 @@ class Products with ChangeNotifier {
           price: product.price,
           imageUrl: product.imageUrl));
       notifyListeners();
+      return true;
     }
+    return false;
   }
 
   void delete(Product product) {
