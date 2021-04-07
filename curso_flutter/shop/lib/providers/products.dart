@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http; //Alias opcional para o pacote
 import 'package:shop/data/dummy_data.dart';
 import 'package:shop/models/product.dart';
 
@@ -22,6 +25,19 @@ class Products with ChangeNotifier {
   }
 
   void add(Product product) {
+    //https://console.firebase.google.com/project/flutter-cod3r-626b9/database/flutter-cod3r-626b9-default-rtdb/data
+    //https://http2.mlstatic.com/D_NQ_NP_798682-MLB40362410711_012020-O.webp
+    const url =
+        'https://flutter-cod3r-626b9-default-rtdb.firebaseio.com/products.json';
+    http.post(url,
+        body: json.encode({
+          // 'id': product.id,
+          'title': product.title,
+          'description': product.description,
+          'price': product.price,
+          'imageUrl': product.imageUrl,
+          'isFavorite': product.isFavorite,
+        }));
     _items.add(product);
     notifyListeners();
   }
