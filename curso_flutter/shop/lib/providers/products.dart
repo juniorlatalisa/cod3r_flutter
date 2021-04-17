@@ -6,6 +6,10 @@ import 'package:shop/data/dummy_data.dart';
 import 'package:shop/models/product.dart';
 
 class Products with ChangeNotifier {
+  //https://console.firebase.google.com/project/flutter-cod3r-626b9/database/flutter-cod3r-626b9-default-rtdb/data
+  //https://http2.mlstatic.com/D_NQ_NP_798682-MLB40362410711_012020-O.webp
+  final _url =
+      'https://flutter-cod3r-626b9-default-rtdb.firebaseio.com/products.json';
   List<Product> _items = dummyProduct;
   bool _showFavoriteOnly = false;
 
@@ -14,6 +18,11 @@ class Products with ChangeNotifier {
   List<Product> get items => _showFavoriteOnly
       ? _items.where((product) => product.isFavorite).toList()
       : [..._items];
+
+  Future<void> loadProducts() async {
+    final response = await http.get(_url);
+    print(json.decode(response.body));
+  }
 
   bool get showFavoriteOnly => _showFavoriteOnly;
 
@@ -25,13 +34,9 @@ class Products with ChangeNotifier {
   }
 
   Future<bool> add(Product product) {
-    //https://console.firebase.google.com/project/flutter-cod3r-626b9/database/flutter-cod3r-626b9-default-rtdb/data
-    //https://http2.mlstatic.com/D_NQ_NP_798682-MLB40362410711_012020-O.webp
-    const url =
-        'https://flutter-cod3r-626b9-default-rtdb.firebaseio.com/products.json';
     return http
         .post(
-          url,
+          _url,
           body: json.encode({
             // 'id': product.id,
             'title': product.title,

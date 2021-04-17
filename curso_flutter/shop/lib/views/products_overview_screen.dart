@@ -18,6 +18,7 @@ class ProductOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Products products = Provider.of(context);
+    products.loadProducts();
     return Scaffold(
       appBar: AppBar(
         title: Text('Minha Loja'),
