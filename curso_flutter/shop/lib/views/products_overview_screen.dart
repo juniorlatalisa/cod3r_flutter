@@ -19,6 +19,7 @@ class ProductOverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Products products = Provider.of(context);
     products.loadProducts();
+    final loadedProducts = products.items;
     return Scaffold(
       appBar: AppBar(
         title: Text('Minha Loja'),
@@ -53,7 +54,9 @@ class ProductOverviewScreen extends StatelessWidget {
           )
         ],
       ),
-      body: ProductGrid(),
+      body: loadedProducts.isEmpty
+          ? Center(child: CircularProgressIndicator())
+          : ProductGrid(loadedProducts),
       drawer: AppDrawer(),
     );
   }

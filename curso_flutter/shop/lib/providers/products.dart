@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http; //Alias opcional para o pacote
+import 'package:http/http.dart';
 import 'package:shop/data/dummy_data.dart';
 import 'package:shop/models/product.dart';
 
@@ -10,7 +11,7 @@ class Products with ChangeNotifier {
   //https://http2.mlstatic.com/D_NQ_NP_798682-MLB40362410711_012020-O.webp
   final _url =
       'https://flutter-cod3r-626b9-default-rtdb.firebaseio.com/products.json';
-  List<Product> _items = dummyProduct;
+  List<Product> _items = [];
   bool _showFavoriteOnly = false;
 
   int get size => _items.length;
@@ -20,8 +21,24 @@ class Products with ChangeNotifier {
       : [..._items];
 
   Future<void> loadProducts() async {
+    if (_items.isNotEmpty) {
+      return;
+    }
     final response = await http.get(_url);
-    print(json.decode(response.body));
+    Map<String, dynamic> data = json.decode(response.body);
+    if (data == null || data.isEmpty) {
+      dummyProduct.forEach((product) => add(product));
+      return;
+    }
+    data.forEach((productKey, productData) => _items.add(Product(
+          id: productKey,
+          title: productData['title'],
+          description: productData['description'],
+          price: productData['price'],
+          imageUrl: productData['imageUrl'],
+          isFavorite: productData['isFavorite'],
+        )));
+    notifyListeners();
   }
 
   bool get showFavoriteOnly => _showFavoriteOnly;
@@ -34,22 +51,30 @@ class Products with ChangeNotifier {
   }
 
   Future<bool> add(Product product) {
-    return http
-        .post(
-          _url,
-          body: json.encode({
-            // 'id': product.id,
-            'title': product.title,
-            'description': product.description,
-            'price': product.price,
-            'imageUrl': product.imageUrl,
-            'isFavorite': product.isFavorite,
-          }),
-        )
-        .then((response) => _add(product, response));
+    return _post(product).then((response) {
+      if (_onResponse(product, response)) {
+        notifyListeners();
+        return true;
+      }
+      return false;
+    });
   }
 
-  bool _add(Product product, http.Response response) {
+  Future<Response> _post(Product product) {
+    return http.post(
+      _url,
+      body: json.encode({
+        // 'id': product.id,
+        'title': product.title,
+        'description': product.description,
+        'price': product.price,
+        'imageUrl': product.imageUrl,
+        'isFavorite': product.isFavorite,
+      }),
+    );
+  }
+
+  bool _onResponse(Product product, http.Response response) {
     if (response.statusCode == 200) {
       final id = json.decode(response.body)['name'];
       _items.add(Product(
@@ -58,7 +83,6 @@ class Products with ChangeNotifier {
           description: product.description,
           price: product.price,
           imageUrl: product.imageUrl));
-      notifyListeners();
       return true;
     }
     return false;
