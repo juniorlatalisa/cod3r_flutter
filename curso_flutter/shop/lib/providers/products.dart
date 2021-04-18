@@ -97,16 +97,27 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
-  void update(Product product) {
+  Future<bool> update(Product product) {
     if (product == null || product.id == null) {
-      return;
+      return Future.value(false);
     }
     final index = _items.indexWhere((p) => p.id == product.id);
     if (index < 0) {
-      return;
+      return Future.value(false);
     }
     _items[index] = product;
     notifyListeners();
+    return http
+        .patch(
+          _url.replaceFirst('.json', '/${product.id}.json'),
+          body: json.encode({
+            'title': product.title,
+            'description': product.description,
+            'price': product.price,
+            'imageUrl': product.imageUrl,
+          }),
+        )
+        .then((response) => response.statusCode == 200);
   }
 
   void toggleFavorite(Product product) {
