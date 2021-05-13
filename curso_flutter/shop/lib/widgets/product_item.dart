@@ -47,10 +47,12 @@ class ProductItem extends StatelessWidget {
                     ),
                   ],
                 ),
-              ).then((value) => value
-                  ? Provider.of<Products>(context, listen: false)
-                      .delete(product)
-                  : null),
+              )
+                  .then((value) => value
+                      ? Provider.of<Products>(context, listen: false)
+                          .delete(product)
+                      : Future.value(false))
+                  .then((value) => print('Deleted: $value')),
             ),
           ],
         ),

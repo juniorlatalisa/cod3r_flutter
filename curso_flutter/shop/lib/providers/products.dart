@@ -88,13 +88,16 @@ class Products with ChangeNotifier {
     return false;
   }
 
-  void delete(Product product) {
+  Future<bool> delete(Product product) {
     final index = _items.indexWhere((p) => p.id == product.id);
     if (index < 0) {
-      return;
+      return Future.value(false);
     }
     _items.removeAt(index);
     notifyListeners();
+    return http
+        .delete(_url.replaceFirst('.json', '/${product.id}.json'))
+        .then((response) => response.statusCode == 200);
   }
 
   Future<bool> update(Product product) {
