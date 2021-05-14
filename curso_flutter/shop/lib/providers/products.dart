@@ -25,6 +25,10 @@ class Products with ChangeNotifier {
       return;
     }
     final response = await http.get(_url);
+    if (response.statusCode != 200) {
+      print(response.body);
+      return;
+    }
     Map<String, dynamic> data = json.decode(response.body);
     if (data == null || data.isEmpty) {
       dummyProduct.forEach((product) => add(product));
@@ -123,8 +127,16 @@ class Products with ChangeNotifier {
         .then((response) => response.statusCode == 200);
   }
 
-  void toggleFavorite(Product product) {
+  Future<int> toggleFavorite(Product product) {
     product.isFavorite = !product.isFavorite;
     notifyListeners();
+    return http
+        .patch(
+          _url.replaceFirst('.json', '/${product.id}.json'),
+          body: json.encode({
+            'isFavorite': product.isFavorite,
+          }),
+        )
+        .then((response) => response.statusCode);
   }
 }
