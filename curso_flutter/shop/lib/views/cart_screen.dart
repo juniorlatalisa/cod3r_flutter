@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/models/cart_item.dart';
 import 'package:shop/providers/cart.dart';
 import 'package:shop/providers/orders.dart';
 import 'package:shop/widgets/cart_item.dart';
@@ -41,15 +42,7 @@ class CartScreen extends StatelessWidget {
                     backgroundColor: theme.primaryColor,
                   ),
                   Spacer(),
-                  TextButton(
-                    onPressed: () {
-                      Provider.of<Orders>(context, listen: false)
-                          .add(items, cart.totalAmount);
-                      cart.clear();
-                    },
-                    child: Text('COMPRAR'),
-                    //textColor: theme.primaryColor,
-                  )
+                  OrderButton(cart: cart, items: items)
                 ],
               ),
             ),
@@ -64,5 +57,47 @@ class CartScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key key,
+    @required this.cart,
+    @required this.items,
+  }) : super(key: key);
+
+  final Cart cart;
+  final List<CartItem> items;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  bool _isLoading = false;
+  @override
+  Widget build(BuildContext context) {
+    return _isLoading
+        ? CircularProgressIndicator()
+        : TextButton(
+            onPressed: widget.cart.totalAmount == 0
+                ? null
+                : () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    final order =
+                        await Provider.of<Orders>(context, listen: false)
+                            .add(widget.items, widget.cart.totalAmount);
+                    widget.cart.clear();
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    print(order.id);
+                  },
+            child: Text('COMPRAR'),
+            //textColor: theme.primaryColor,
+          );
   }
 }
