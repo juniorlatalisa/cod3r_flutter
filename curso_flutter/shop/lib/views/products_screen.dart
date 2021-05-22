@@ -26,7 +26,7 @@ class ProductsScreen extends StatelessWidget {
       ),
       drawer: AppDrawer(),
       body: RefreshIndicator(
-        onRefresh: () => products.loadProducts(),
+        onRefresh: () => products.load(),
         child: Padding(
           padding: EdgeInsets.all(8),
           child: ListView.builder(

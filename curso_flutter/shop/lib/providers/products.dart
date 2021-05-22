@@ -20,7 +20,7 @@ class Products with ChangeNotifier {
       ? _items.where((product) => product.isFavorite).toList()
       : [..._items];
 
-  Future<void> loadProducts() async {
+  Future<void> load() async {
     if (_items.isNotEmpty) {
       return;
     }
