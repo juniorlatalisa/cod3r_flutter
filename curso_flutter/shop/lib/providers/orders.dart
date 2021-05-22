@@ -23,7 +23,7 @@ class Orders with ChangeNotifier {
   int get size => _items.length;
 
   Future<Order> add(List<CartItem> products, double amount) async {
-    final response = await http.post(_url,
+    final response = await http.post(Uri.parse(_url),
         body: json.encode({
           'amount': amount,
           'products': products

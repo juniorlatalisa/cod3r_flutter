@@ -24,7 +24,7 @@ class Products with ChangeNotifier {
     if (_items.isNotEmpty) {
       return;
     }
-    final response = await http.get(_url);
+    final response = await http.get(Uri.parse(_url));
     if (response.statusCode != 200) {
       print(response.body);
       return;
@@ -66,7 +66,7 @@ class Products with ChangeNotifier {
 
   Future<Response> _post(Product product) {
     return http.post(
-      _url,
+      Uri.parse(_url),
       body: json.encode({
         // 'id': product.id,
         'title': product.title,
@@ -100,7 +100,7 @@ class Products with ChangeNotifier {
     _items.removeAt(index);
     notifyListeners();
     return http
-        .delete(_url.replaceFirst('.json', '/${product.id}.json'))
+        .delete(Uri.parse(_url.replaceFirst('.json', '/${product.id}.json')))
         .then((response) => response.statusCode == 200);
   }
 
@@ -116,7 +116,7 @@ class Products with ChangeNotifier {
     notifyListeners();
     return http
         .patch(
-          _url.replaceFirst('.json', '/${product.id}.json'),
+          Uri.parse(_url.replaceFirst('.json', '/${product.id}.json')),
           body: json.encode({
             'title': product.title,
             'description': product.description,
@@ -132,7 +132,7 @@ class Products with ChangeNotifier {
     notifyListeners();
     return http
         .patch(
-          _url.replaceFirst('.json', '/${product.id}.json'),
+          Uri.parse(_url.replaceFirst('.json', '/${product.id}.json')),
           body: json.encode({
             'isFavorite': product.isFavorite,
           }),
