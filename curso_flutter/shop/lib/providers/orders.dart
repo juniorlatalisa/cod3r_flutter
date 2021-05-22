@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http; //Alias opcional para o pacote
 import 'package:shop/models/cart_item.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/utils/constants.dart';
 
 class Order {
   final String id;
@@ -15,8 +16,7 @@ class Order {
 }
 
 class Orders with ChangeNotifier {
-  final _url =
-      'https://flutter-cod3r-626b9-default-rtdb.firebaseio.com/orders.json';
+  final _url = '${Constants.BASE_API_URL}/orders.json';
   final _items = <Order>[];
 
   List<Order> get items => [..._items];
