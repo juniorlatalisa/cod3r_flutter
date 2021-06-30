@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop/exceptions/auth_exception.dart';
 
 class Auth with ChangeNotifier {
 //Cadastre-se com e-mail / senha
@@ -32,8 +33,14 @@ class Auth with ChangeNotifier {
           'password': password,
         }));
 
-    print(json.decode(response.body));
+    final body = json.decode(response.body);
 
-    return Future.value();
+    print(body);
+
+    if (response.statusCode == 200) {
+      return Future.value();
+    }
+
+    throw AuthException(body['error']['message']);
   }
 }

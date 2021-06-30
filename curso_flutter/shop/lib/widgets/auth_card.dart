@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/exceptions/auth_exception.dart';
 import 'package:shop/providers/auth.dart';
 
 enum AuthMode { Signup, Login }
@@ -24,6 +25,22 @@ class _AuthCardState extends State<AuthCard> {
     'password': null,
   };
 
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Erro'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('OK'),
+          )
+        ],
+      ),
+    );
+  }
+
   Future<void> _submit() async {
     if (!_form.currentState.validate()) {
       setState(() => _isValid = false);
@@ -32,12 +49,20 @@ class _AuthCardState extends State<AuthCard> {
     setState(() => _isLoading = true);
     _form.currentState.save();
     final Auth auth = Provider.of(context, listen: false);
-    if (_authMode == AuthMode.Login) {
-      await auth.signin(_authData['email'], _authData['password']);
-    } else {
-      await auth.signup(_authData['email'], _authData['password']);
+
+    try {
+      if (_authMode == AuthMode.Login) {
+        await auth.signin(_authData['email'], _authData['password']);
+      } else {
+        await auth.signup(_authData['email'], _authData['password']);
+      }
+    } on AuthException catch (e) {
+      _showErrorDialog(e.toString());
+    } catch (e) {
+      _showErrorDialog('Erro inesperado: ' + e);
+    } finally {
+      setState(() => _isLoading = false);
     }
-    setState(() => _isLoading = false);
   }
 
   void _switchAuthMode() {
