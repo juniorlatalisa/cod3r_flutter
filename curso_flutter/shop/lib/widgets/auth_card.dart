@@ -33,7 +33,7 @@ class _AuthCardState extends State<AuthCard> {
     _form.currentState.save();
     final Auth auth = Provider.of(context, listen: false);
     if (_authMode == AuthMode.Login) {
-      //Login
+      await auth.signin(_authData['email'], _authData['password']);
     } else {
       await auth.signup(_authData['email'], _authData['password']);
     }
