@@ -8,10 +8,14 @@ import 'package:shop/models/product.dart';
 import 'package:shop/utils/constants.dart';
 
 class Products with ChangeNotifier {
+  Products(this._token, this._items);
+
   //https://console.firebase.google.com/project/flutter-cod3r-626b9/database/flutter-cod3r-626b9-default-rtdb/data
   //https://http2.mlstatic.com/D_NQ_NP_798682-MLB40362410711_012020-O.webp
   final _url = '${Constants.BASE_API_URL}/products.json';
-  List<Product> _items = [];
+  final List<Product> _items;
+  final String _token;
+
   bool _showFavoriteOnly = false;
 
   int get size => _items.length;
@@ -24,7 +28,7 @@ class Products with ChangeNotifier {
     if (_items.isNotEmpty) {
       return;
     }
-    final response = await http.get(Uri.parse(_url));
+    final response = await http.get(Uri.parse(_url + '?auth=$_token'));
     if (response.statusCode != 200) {
       print(response.body);
       return;
