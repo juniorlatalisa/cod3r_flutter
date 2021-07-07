@@ -16,8 +16,11 @@ class Order {
 }
 
 class Orders with ChangeNotifier {
+  Orders(this._token, this._items);
+
   final _url = '${Constants.BASE_API_URL}/orders.json';
-  final _items = <Order>[];
+  final List<Order> _items;
+  final String _token;
 
   List<Order> get items => [..._items];
 
@@ -27,7 +30,7 @@ class Orders with ChangeNotifier {
     if (_items.isNotEmpty) {
       return;
     }
-    final response = await http.get(Uri.parse(_url));
+    final response = await http.get(Uri.parse('$_url?auth=$_token'));
     if (response.statusCode != 200) {
       print(response.body);
       return;
@@ -55,7 +58,7 @@ class Orders with ChangeNotifier {
 
   Future<Order> add(List<CartItem> products, double amount) async {
     final date = DateTime.now();
-    final response = await http.post(Uri.parse(_url),
+    final response = await http.post(Uri.parse('$_url?auth=$_token'),
         body: json.encode({
           'amount': amount,
           'date': date.toIso8601String(),
