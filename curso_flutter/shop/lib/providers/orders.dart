@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http; //Alias opcional para o pacote
 import 'package:shop/models/cart_item.dart';
 import 'package:shop/models/product.dart';
-import 'package:shop/utils/constants.dart';
+import 'package:shop/utils/app_firebase.dart';
 
 class Order {
   final String id;
@@ -18,7 +18,7 @@ class Order {
 class Orders with ChangeNotifier {
   Orders(this._token, this._items);
 
-  final _url = '${Constants.BASE_API_URL}/orders.json';
+  final _url = '${AppFireBase.BASE_API_URL}/orders.json';
   final List<Order> _items;
   final String _token;
 

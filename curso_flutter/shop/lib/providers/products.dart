@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http; //Alias opcional para o pacote
 import 'package:http/http.dart';
 import 'package:shop/data/dummy_data.dart';
 import 'package:shop/models/product.dart';
-import 'package:shop/utils/constants.dart';
+import 'package:shop/utils/app_firebase.dart';
 
 class Products with ChangeNotifier {
   Products(this._token, this._items);
@@ -13,7 +13,7 @@ class Products with ChangeNotifier {
   //http://www.gifs-animados.net/original/bola-basquete.gif
   //https://console.firebase.google.com/project/flutter-cod3r-626b9/database/flutter-cod3r-626b9-default-rtdb/data
   //https://http2.mlstatic.com/D_NQ_NP_798682-MLB40362410711_012020-O.webp
-  final _url = '${Constants.BASE_API_URL}/products.json';
+  final _url = '${AppFireBase.BASE_API_URL}/products.json';
   final List<Product> _items;
   final String _token;
 
