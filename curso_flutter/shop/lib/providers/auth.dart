@@ -6,12 +6,15 @@ import 'package:shop/exceptions/auth_exception.dart';
 import 'package:shop/utils/app_firebase.dart';
 
 class Auth with ChangeNotifier {
+  String _localId;
   String _idToken;
   DateTime _expiresDate;
 
   String get token => _idToken;
+  String get localId => _localId;
 
   bool get isAuth => !(_idToken == null ||
+      _localId == null ||
       _expiresDate == null ||
       _expiresDate.isBefore(DateTime.now()));
 
@@ -48,6 +51,7 @@ class Auth with ChangeNotifier {
     if (response.statusCode == 200) {
       int _expiresIn = int.parse(body['expiresIn']);
       _idToken = body['idToken'];
+      _localId = body['localId'];
       _expiresDate = DateTime.now().add(Duration(seconds: _expiresIn));
       notifyListeners();
       return Future.value();
