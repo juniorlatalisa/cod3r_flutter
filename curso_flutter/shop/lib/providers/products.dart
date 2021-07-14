@@ -8,7 +8,7 @@ import 'package:shop/models/product.dart';
 import 'package:shop/utils/app_firebase.dart';
 
 class Products with ChangeNotifier {
-  Products(this._token, this._items);
+  Products([this._token, this._userId, this._items = const []]);
 
   //http://www.gifs-animados.net/original/bola-basquete.gif
   //https://console.firebase.google.com/project/flutter-cod3r-626b9/database/flutter-cod3r-626b9-default-rtdb/data
@@ -17,6 +17,7 @@ class Products with ChangeNotifier {
   final _urlFavorites = '${AppFireBase.BASE_API_URL}/favorites.json';
   final List<Product> _items;
   final String _token;
+  final String _userId;
 
   bool _showFavoriteOnly = false;
 
@@ -30,6 +31,27 @@ class Products with ChangeNotifier {
     if (_items.isNotEmpty) {
       return;
     }
+    return _loadProducts(await _loadFavorites());
+  }
+
+  Future<Map<String, bool>> _loadFavorites() async {
+    final response = await http.get(Uri.parse(
+        '$_urlFavorites?auth=$_token'.replaceFirst('.json', '/$_userId.json')));
+    if (response.statusCode != 200) {
+      print(response.body);
+      return Future.value({});
+    }
+    Map<String, dynamic> data = json.decode(response.body);
+    if (data == null || data.isEmpty) {
+      return Future.value({});
+    }
+    final Map<String, bool> favorites = {};
+    data.forEach(
+        (productKey, favoriteData) => favorites[productKey] = favoriteData);
+    return Future.value(favorites);
+  }
+
+  Future<void> _loadProducts(Map<String, bool> favorites) async {
     final response = await http.get(Uri.parse('$_urlProducts?auth=$_token'));
     if (response.statusCode != 200) {
       print(response.body);
@@ -47,6 +69,7 @@ class Products with ChangeNotifier {
           price: productData['price'],
           imageUrl: productData['imageUrl'],
           //isFavorite: productData['isFavorite'],
+          isFavorite: favorites[productKey] ?? false,
         )));
     notifyListeners();
   }
@@ -135,13 +158,13 @@ class Products with ChangeNotifier {
         .then((response) => response.statusCode == 200);
   }
 
-  Future<int> toggleFavorite(Product product, String userId) {
+  Future<int> toggleFavorite(Product product) {
     product.isFavorite = !product.isFavorite;
     notifyListeners();
     return http
         .put(
           Uri.parse('$_urlFavorites?auth=$_token'
-              .replaceFirst('.json', '/$userId/${product.id}.json')),
+              .replaceFirst('.json', '/$_userId/${product.id}.json')),
           body: json.encode(product.isFavorite),
         )
         .then((response) => response.statusCode);

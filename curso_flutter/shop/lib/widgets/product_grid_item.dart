@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/models/product.dart';
-import 'package:shop/providers/auth.dart';
 import 'package:shop/providers/cart.dart';
 import 'package:shop/providers/products.dart';
 import 'package:shop/utils/app_routes.dart';
@@ -15,7 +14,6 @@ class ProductGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Products products = Provider.of(context);
-    final Auth auth = Provider.of(context);
     final Cart cart = Provider.of(context, listen: false);
     final theme = Theme.of(context);
     final navigator = Navigator.of(context);
@@ -39,9 +37,8 @@ class ProductGridItem extends StatelessWidget {
             icon: Icon(
                 product.isFavorite ? Icons.favorite : Icons.favorite_border),
             color: theme.accentColor,
-            onPressed: () => products
-                .toggleFavorite(product, auth.localId)
-                .then((code) => print(code)),
+            onPressed: () =>
+                products.toggleFavorite(product).then((code) => print(code)),
           ),
           title: Text(
             product.title,

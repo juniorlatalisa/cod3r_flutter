@@ -16,7 +16,7 @@ class Order {
 }
 
 class Orders with ChangeNotifier {
-  Orders(this._token, this._items);
+  Orders([this._token, this._items = const []]);
 
   final _url = '${AppFireBase.BASE_API_URL}/orders.json';
   final List<Order> _items;
