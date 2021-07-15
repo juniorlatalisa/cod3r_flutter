@@ -11,16 +11,29 @@ class Order {
   final double amount;
   final List<CartItem> products;
   final DateTime date;
+  final String userId;
 
-  const Order({this.id, this.amount, this.products, this.date});
+  const Order({
+    @required this.id,
+    @required this.amount,
+    @required this.products,
+    @required this.date,
+    @required this.userId,
+  });
 }
 
 class Orders with ChangeNotifier {
-  Orders([this._token, this._items = const []]);
+  Orders([
+    this._token,
+    this._userId,
+    this._items = const [],
+  ]) : this._url = '${AppFireBase.BASE_API_URL}/orders/$_userId.json';
 
-  final _url = '${AppFireBase.BASE_API_URL}/orders.json';
   final List<Order> _items;
   final String _token;
+  final String _userId;
+  //final _url = '${AppFireBase.BASE_API_URL}/$_userId/orders.json';
+  final String _url;
 
   List<Order> get items => [..._items];
 
@@ -42,6 +55,7 @@ class Orders with ChangeNotifier {
     }
     data.forEach((orderyKey, orderData) => _items.add(Order(
           id: orderyKey,
+          userId: _userId,
           date: DateTime.parse(orderData['date']),
           amount: orderData['amount'],
           products: (orderData['products'] as List<dynamic>)
@@ -51,8 +65,6 @@ class Orders with ChangeNotifier {
                   ))
               .toList(),
         )));
-
-    //
     notifyListeners();
   }
 
@@ -71,6 +83,7 @@ class Orders with ChangeNotifier {
         }));
     final Order order = Order(
       id: json.decode(response.body)['name'],
+      userId: _userId,
       amount: amount,
       date: date,
       products: products,
