@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -9,6 +10,7 @@ class Auth with ChangeNotifier {
   String _localId;
   String _idToken;
   DateTime _expiresDate;
+  Timer _timer;
 
   String get token => _idToken;
   String get localId => _localId;
@@ -42,6 +44,10 @@ class Auth with ChangeNotifier {
     this._expiresDate = null;
     this._idToken = null;
     this._localId = null;
+    if (_timer != null) {
+      _timer.cancel();
+      _timer = null;
+    }
     notifyListeners();
   }
 
@@ -61,6 +67,7 @@ class Auth with ChangeNotifier {
       _localId = body['localId'];
       _expiresDate = DateTime.now().add(Duration(seconds: _expiresIn));
       notifyListeners();
+      _autoLogout(_expiresIn);
       return Future.value();
     } else {
       _idToken = null;
@@ -68,5 +75,16 @@ class Auth with ChangeNotifier {
     }
 
     throw AuthException(body['error']['message']);
+  }
+
+  void _autoLogout(int expiresIn) {
+    if (_timer != null) {
+      _timer.cancel();
+    }
+    print('expiresIn: $expiresIn');
+    _timer = Timer(Duration(seconds: expiresIn), () {
+      _timer = null;
+      logout();
+    });
   }
 }
