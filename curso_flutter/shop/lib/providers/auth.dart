@@ -3,10 +3,13 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop/data/store.dart';
 import 'package:shop/exceptions/auth_exception.dart';
 import 'package:shop/utils/app_firebase.dart';
 
 class Auth with ChangeNotifier {
+  static const key = 'signin';
+
   String _localId;
   String _idToken;
   DateTime _expiresDate;
@@ -40,6 +43,18 @@ class Auth with ChangeNotifier {
     return _auth(_signin, email, password);
   }
 
+  Future<bool> autoSignin() async {
+    if (isAuth) {
+      return Future.value(true);
+    }
+    final Map<String, dynamic> body = await Store.loadMap(key);
+    if (body == null || body.isEmpty) {
+      return Future.value(false);
+    }
+    _processBody(body);
+    return Future.value(isAuth);
+  }
+
   void logout() {
     this._expiresDate = null;
     this._idToken = null;
@@ -48,6 +63,7 @@ class Auth with ChangeNotifier {
       _timer.cancel();
       _timer = null;
     }
+    Store.delete(key);
     notifyListeners();
   }
 
@@ -59,15 +75,11 @@ class Auth with ChangeNotifier {
           'password': password,
         }));
 
-    final body = json.decode(response.body);
+    final Map<String, dynamic> body = json.decode(response.body);
 
     if (response.statusCode == 200) {
-      int _expiresIn = int.parse(body['expiresIn']);
-      _idToken = body['idToken'];
-      _localId = body['localId'];
-      _expiresDate = DateTime.now().add(Duration(seconds: _expiresIn));
-      notifyListeners();
-      _autoLogout(_expiresIn);
+      _processBody(body);
+      Store.saveMap(key, body);
       return Future.value();
     } else {
       _idToken = null;
@@ -77,11 +89,28 @@ class Auth with ChangeNotifier {
     throw AuthException(body['error']['message']);
   }
 
+  void _processBody(Map<String, dynamic> body) {
+    int expiresIn = int.parse(body['expiresIn']);
+    _idToken = body['idToken'];
+    _localId = body['localId'];
+    if (body['expiresDate'] == null) {
+      _expiresDate = DateTime.now().add(Duration(seconds: expiresIn));
+      body['expiresDate'] = _expiresDate.toIso8601String();
+    } else {
+      _expiresDate = DateTime.parse(body['expiresDate']);
+      expiresIn = _expiresDate.difference(DateTime.now()).inSeconds;
+    }
+    _autoLogout(expiresIn);
+    notifyListeners();
+  }
+
   void _autoLogout(int expiresIn) {
+    if (expiresIn < 1) {
+      return;
+    }
     if (_timer != null) {
       _timer.cancel();
     }
-    print('expiresIn: $expiresIn');
     _timer = Timer(Duration(seconds: expiresIn), () {
       _timer = null;
       logout();

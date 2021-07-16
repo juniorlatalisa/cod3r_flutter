@@ -27,11 +27,15 @@ class Products with ChangeNotifier {
       ? _items.where((product) => product.isFavorite).toList()
       : [..._items];
 
+  static Products _instance;
+
   Future<void> load() async {
     if (_items.isNotEmpty) {
       return;
     }
-    return _loadProducts(await _loadFavorites());
+    _instance = this;
+    return _loadProducts(await _loadFavorites()).then(
+        (value) => _instance == this ? notifyListeners() : Future.value());
   }
 
   Future<Map<String, bool>> _loadFavorites() async {
@@ -51,16 +55,16 @@ class Products with ChangeNotifier {
     return Future.value(favorites);
   }
 
-  Future<void> _loadProducts(Map<String, bool> favorites) async {
+  Future<bool> _loadProducts(Map<String, bool> favorites) async {
     final response = await http.get(Uri.parse('$_urlProducts?auth=$_token'));
     if (response.statusCode != 200) {
       print(response.body);
-      return;
+      return Future.value(false);
     }
     Map<String, dynamic> data = json.decode(response.body);
     if (data == null || data.isEmpty) {
       dummyProduct.forEach((product) => add(product));
-      return;
+      return Future.value(false);
     }
     data.forEach((productKey, productData) => _items.add(Product(
           id: productKey,
@@ -71,7 +75,8 @@ class Products with ChangeNotifier {
           //isFavorite: productData['isFavorite'],
           isFavorite: favorites[productKey] ?? false,
         )));
-    notifyListeners();
+    //notifyListeners();
+    return Future.value(true);
   }
 
   bool get showFavoriteOnly => _showFavoriteOnly;
