@@ -38,6 +38,13 @@ class Auth with ChangeNotifier {
     return _auth(_signin, email, password);
   }
 
+  void logout() {
+    this._expiresDate = null;
+    this._idToken = null;
+    this._localId = null;
+    notifyListeners();
+  }
+
   Future<void> _auth(String uri, String email, String password) async {
     final response = await http.post(Uri.parse(uri),
         body: json.encode({
