@@ -13,11 +13,39 @@ class AuthCard extends StatefulWidget {
   _AuthCardState createState() => _AuthCardState();
 }
 
-class _AuthCardState extends State<AuthCard> {
+class _AuthCardState extends State<AuthCard>
+    with SingleTickerProviderStateMixin {
   bool _isLoading = false;
   bool _isValid = true;
   AuthMode _authMode = AuthMode.Login;
   GlobalKey<FormState> _form = GlobalKey();
+
+  AnimationController _controller;
+  Animation<Size> _heightAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    this._controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    this._heightAnimation = Tween(
+      begin: Size(double.infinity, 290),
+      end: Size(double.infinity, 371),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.linear,
+    ));
+
+    _heightAnimation.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    this._controller.dispose();
+    super.dispose();
+  }
 
   final _passwordController = TextEditingController();
   final Map<String, String> _authData = {
@@ -70,6 +98,11 @@ class _AuthCardState extends State<AuthCard> {
     _isValid = true;
     setState(() => _authMode =
         (AuthMode.Login == _authMode) ? AuthMode.Signup : AuthMode.Login);
+    if (AuthMode.Login == _authMode) {
+      _controller.reverse();
+    } else {
+      _controller.forward();
+    }
   }
 
   @override
@@ -84,10 +117,11 @@ class _AuthCardState extends State<AuthCard> {
       child: Container(
         width: _isLoading ? 100 : deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
-        height: _isLoading
-            ? 100
-            : ((AuthMode.Signup == _authMode ? 340 : 270) *
-                (_isValid ? 1.0 : 1.2)),
+        // height: _isLoading
+        //     ? 100
+        //     : ((AuthMode.Signup == _authMode ? 340 : 270) *
+        //         (_isValid ? 1.0 : 1.2)),
+        height: _heightAnimation.value.height,
         child: _isLoading
             ? CircularProgressIndicator(
                 strokeWidth: 0.9,
