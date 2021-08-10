@@ -20,32 +20,48 @@ class _AuthCardState extends State<AuthCard>
   AuthMode _authMode = AuthMode.Login;
   GlobalKey<FormState> _form = GlobalKey();
 
-  // AnimationController _controller;
+  AnimationController _controller;
   // Animation<Size> _heightAnimation;
+  Animation<double> _opacityAnimation;
+  Animation<Offset> _slideAnimation;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   this._controller = AnimationController(
-  //     vsync: this,
-  //     duration: const Duration(milliseconds: 300),
-  //   );
-  //   this._heightAnimation = Tween(
-  //     begin: Size(double.infinity, 290),
-  //     end: Size(double.infinity, 371),
-  //   ).animate(CurvedAnimation(
-  //     parent: _controller,
-  //     curve: Curves.linear,
-  //   ));
+  @override
+  void initState() {
+    super.initState();
+    this._controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    //   this._heightAnimation = Tween(
+    //     begin: Size(double.infinity, 290),
+    //     end: Size(double.infinity, 371),
+    //   ).animate(CurvedAnimation(
+    //     parent: _controller,
+    //     curve: Curves.linear,
+    //   ));
+    this._opacityAnimation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.linear,
+    ));
+    this._slideAnimation = Tween<Offset>(
+      begin: const Offset(0.0, -1.0),
+      end: const Offset(0.0, 0.0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.linear,
+    ));
 
-  //   // _heightAnimation.addListener(() => setState(() {}));
-  // }
+    // _heightAnimation.addListener(() => setState(() {}));
+  }
 
-  // @override
-  // void dispose() {
-  //   this._controller.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    this._controller.dispose();
+    super.dispose();
+  }
 
   final _passwordController = TextEditingController();
   final Map<String, String> _authData = {
@@ -98,11 +114,11 @@ class _AuthCardState extends State<AuthCard>
     _isValid = true;
     setState(() => _authMode =
         (AuthMode.Login == _authMode) ? AuthMode.Signup : AuthMode.Login);
-    // if (AuthMode.Login == _authMode) {
-    //   _controller.reverse();
-    // } else {
-    //   _controller.forward();
-    // }
+    if (AuthMode.Login == _authMode) {
+      _controller.reverse();
+    } else {
+      _controller.forward();
+    }
   }
 
   @override
@@ -121,7 +137,7 @@ class _AuthCardState extends State<AuthCard>
         padding: EdgeInsets.all(16.0),
         height: _isLoading
             ? 100
-            : ((AuthMode.Signup == _authMode ? 340 : 270) *
+            : ((AuthMode.Signup == _authMode ? 380 : 310) *
                 (_isValid ? 1.0 : 1.2)),
         child: _isLoading
             ? const CircularProgressIndicator(
@@ -150,17 +166,31 @@ class _AuthCardState extends State<AuthCard>
                           ? 'Informe uma senha válida!'
                           : null,
                     ),
-                    if (_authMode == AuthMode.Signup)
-                      TextFormField(
-                        decoration:
-                            InputDecoration(labelText: 'Confirmar senha'),
-                        obscureText: true,
-                        validator: (value) => (value == null ||
-                                value.isEmpty ||
-                                value != _passwordController.text)
-                            ? 'Confirme a senha digitada'
-                            : null,
+                    // if (_authMode == AuthMode.Signup)
+                    AnimatedContainer(
+                      constraints: BoxConstraints(
+                        minHeight: _authMode == AuthMode.Signup ? 60 : 0,
+                        maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
                       ),
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      child: FadeTransition(
+                        opacity: _opacityAnimation,
+                        child: SlideTransition(
+                          position: _slideAnimation,
+                          child: TextFormField(
+                            decoration:
+                                InputDecoration(labelText: 'Confirmar senha'),
+                            obscureText: true,
+                            validator: (value) => (value == null ||
+                                    value.isEmpty ||
+                                    value != _passwordController.text)
+                                ? 'Confirme a senha digitada'
+                                : null,
+                          ),
+                        ),
+                      ),
+                    ),
                     // SizedBox(height: 20),
                     Spacer(),
                     TextButton(
