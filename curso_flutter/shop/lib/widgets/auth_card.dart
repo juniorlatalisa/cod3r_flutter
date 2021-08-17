@@ -166,31 +166,31 @@ class _AuthCardState extends State<AuthCard>
                           ? 'Informe uma senha válida!'
                           : null,
                     ),
-                    // if (_authMode == AuthMode.Signup)
-                    AnimatedContainer(
-                      constraints: BoxConstraints(
-                        minHeight: _authMode == AuthMode.Signup ? 60 : 0,
-                        maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
-                      ),
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      child: FadeTransition(
-                        opacity: _opacityAnimation,
-                        child: SlideTransition(
-                          position: _slideAnimation,
-                          child: TextFormField(
-                            decoration:
-                                InputDecoration(labelText: 'Confirmar senha'),
-                            obscureText: true,
-                            validator: (value) => (value == null ||
-                                    value.isEmpty ||
-                                    value != _passwordController.text)
-                                ? 'Confirme a senha digitada'
-                                : null,
+                    if (_authMode == AuthMode.Signup)
+                      AnimatedContainer(
+                        constraints: BoxConstraints(
+                          minHeight: _authMode == AuthMode.Signup ? 60 : 0,
+                          maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
+                        ),
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeIn,
+                        child: FadeTransition(
+                          opacity: _opacityAnimation,
+                          child: SlideTransition(
+                            position: _slideAnimation,
+                            child: TextFormField(
+                              decoration:
+                                  InputDecoration(labelText: 'Confirmar senha'),
+                              obscureText: true,
+                              validator: (value) => (value == null ||
+                                      value.isEmpty ||
+                                      value != _passwordController.text)
+                                  ? 'Confirme a senha digitada'
+                                  : null,
+                            ),
                           ),
                         ),
                       ),
-                    ),
                     // SizedBox(height: 20),
                     Spacer(),
                     TextButton(
