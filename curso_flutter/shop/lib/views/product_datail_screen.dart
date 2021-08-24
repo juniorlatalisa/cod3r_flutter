@@ -25,12 +25,28 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(product.title),
-              background: Hero(
-                tag: product.id,
-                child: Image.network(
-                  product.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+              background: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  Hero(
+                    tag: product.id,
+                    child: Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  DecoratedBox(
+                      decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment(0, 0.8),
+                      end: Alignment(0, 0),
+                      colors: [
+                        Color.fromRGBO(0, 0, 0, 0.6),
+                        Color.fromRGBO(0, 0, 0, 0),
+                      ],
+                    ),
+                  ))
+                ],
               ),
             ),
           ),
@@ -54,7 +70,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              // const SizedBox(height: 1000),
+              const SizedBox(height: 1000),
             ]),
           )
         ],
