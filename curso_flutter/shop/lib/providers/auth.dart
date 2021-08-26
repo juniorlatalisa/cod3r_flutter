@@ -106,6 +106,7 @@ class Auth with ChangeNotifier {
 
   void _autoLogout(int expiresIn) {
     if (expiresIn < 1) {
+      logout();
       return;
     }
     if (_timer != null) {
