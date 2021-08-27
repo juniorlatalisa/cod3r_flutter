@@ -8,7 +8,7 @@ main() {
   //Ctrl + Alt + N -> Run
   //Ctrl + Alt + M -> Stop
   final entradaDoUsuario = stdin.readLineSync();
-  final double raio = double.parse(entradaDoUsuario);
+  final double raio = double.parse(entradaDoUsuario.toString());
   final area = PI * raio * raio;
   print("O valor da área é: " + area.toString());
 }
