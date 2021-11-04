@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:great_places/providers/grate_places.dart';
 import 'package:great_places/widgets/image_input.dart';
+import 'package:provider/provider.dart';
 
 class PlaceFormScreen extends StatefulWidget {
   const PlaceFormScreen({Key? key}) : super(key: key);
@@ -12,14 +14,21 @@ class PlaceFormScreen extends StatefulWidget {
 
 class _PlaceFormScreenState extends State<PlaceFormScreen> {
   final _titleController = TextEditingController();
-  File _selectedImage = File("");
+  String _selectedImage = "";
 
-  void _onSelectedImage(File selectedImage) {
+  void _onSelectedImage(String selectedImage) {
     this._selectedImage = selectedImage;
   }
 
   void _submitForm() {
-    print(this);
+    if (_titleController.text.isEmpty || _selectedImage.isEmpty) return;
+
+    final place = Provider.of<GreatPlaces>(context, listen: false)
+        .add(_titleController.text, File(_selectedImage), 0.0, 0.0);
+
+    print(place);
+
+    Navigator.of(context).pop();
   }
 
   @override
