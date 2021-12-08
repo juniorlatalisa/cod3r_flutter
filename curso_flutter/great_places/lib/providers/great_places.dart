@@ -8,6 +8,19 @@ import 'package:great_places/utils/db_util.dart';
 class GreatPlaces with ChangeNotifier {
   List<Place> _items = [];
 
+  Future<void> load() async {
+    final dataList = await DbUtil.getData('places');
+    _items = dataList
+        .map((item) => Place(
+              id: item['id'],
+              title: item['title'],
+              location: const PlaceLocation(latitude: 0, longitude: 0),
+              image: File(item['image']),
+            ))
+        .toList();
+    notifyListeners();
+  }
+
   List<Place> get items => [..._items];
 
   int get count => _items.length;
