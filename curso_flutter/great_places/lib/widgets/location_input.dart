@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 
 class LocationInput extends StatefulWidget {
   @override
@@ -7,6 +8,12 @@ class LocationInput extends StatefulWidget {
 
 class _LocationInputState extends State<LocationInput> {
   String? _previewImageUrl;
+
+  Future<void> _getCurrentUserLocation() async {
+    final locData = await Location().getLocation();
+    print(locData.latitude);
+    print(locData.longitude);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,7 @@ class _LocationInputState extends State<LocationInput> {
             ),
           ),
           child: _previewImageUrl == null
-              ? const Text('Localização não informada!')
+              ? Text('Localização não informada!')
               : Image.network(
                   _previewImageUrl!,
                   fit: BoxFit.cover,
@@ -35,13 +42,13 @@ class _LocationInputState extends State<LocationInput> {
           children: [
             TextButton.icon(
               icon: Icon(Icons.location_on),
-              label: const Text('Localização atual'),
-              onPressed: () => print(this),
+              label: Text('Localização atual'),
+              onPressed: _getCurrentUserLocation,
             ),
             TextButton.icon(
               icon: Icon(Icons.map),
-              label: const Text('Selecione no Mapa'),
-              onPressed: () => print(this),
+              label: Text('Selecione no Mapa'),
+              onPressed: () {},
             ),
           ],
         )
