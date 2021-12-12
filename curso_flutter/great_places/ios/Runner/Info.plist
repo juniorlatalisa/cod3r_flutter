@@ -6,6 +6,10 @@
 	<string>Precisamos tirar uma foto</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Precisamos tirar uma foto</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Precisamos da sua localização</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Precisamos da sua localização</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
