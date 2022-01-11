@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class UserImagePicker extends StatefulWidget {
   final void Function(File image) onImagePick;
@@ -30,13 +31,16 @@ class _UserImagePickerState extends State<UserImagePicker> {
       setState(() {
         _image = File(pickedImage.path);
       });
+
       widget.onImagePick(_image!);
     }
   }
 
   ImageProvider? _backgroundImage() {
-    return NetworkImage(_image!.uri.toFilePath());
-    // return FileImage(_image!);
+    if (kIsWeb) {
+      return NetworkImage(_image!.uri.toFilePath());
+    }
+    return FileImage(_image!);
   }
 
   @override

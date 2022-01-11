@@ -16,9 +16,9 @@ class AuthOrAppPage extends StatelessWidget {
           stream: AuthMockService().userChanges,
           builder: (ctx, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingPage();
+              return const LoadingPage();
             } else {
-              return snapshot.hasData ? ChatPage() : AuthPage();
+              return snapshot.hasData ? const ChatPage() : const AuthPage();
             }
           }),
     );
