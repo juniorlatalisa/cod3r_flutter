@@ -37,12 +37,19 @@ class ChatFirebaseService implements ChatService {
     );
   }
 
-  //  .withConverter(
-  //   fromFirestore: fromFirestore,
-  //   toFirestore: toFirestore,
-  // )
-
   // ChatMessage => Map<String, dynamic>
+  Map<String, dynamic> _toFirestore(
+    ChatMessage msg,
+    SetOptions? options,
+  ) {
+    return {
+      'text': msg.text,
+      'createdAt': msg.createdAt.toIso8601String(),
+      'userId': msg.userId,
+      'userName': msg.userName,
+      'userImageURL': msg.userImageURL,
+    };
+  }
 
   // Map<String, dynamic> => ChatMessage
   ChatMessage _fromFirestore(
