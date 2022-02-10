@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatFirebaseService implements ChatService {
   @override
   Stream<List<ChatMessage>> messagesStream() {
-    return Stream<List<ChatMessage>>.empty();
+    return const Stream<List<ChatMessage>>.empty();
   }
 
   @override
@@ -15,7 +15,7 @@ class ChatFirebaseService implements ChatService {
     final store = FirebaseFirestore.instance;
 
     // ChatMessage => Map<String, dynamic>
-    store.collection('chat').add({
+    final docRef = await store.collection('chat').add({
       'text': text,
       'createdAt': DateTime.now().toIso8601String(),
       'userId': user.id,
@@ -23,6 +23,17 @@ class ChatFirebaseService implements ChatService {
       'userImageURL': user.imageURL,
     });
 
-    return null;
+    final doc = await docRef.get();
+    final data = doc.data()!;
+
+    //  Map<String, dynamic> => ChatMessage
+    return ChatMessage(
+      id: doc.id,
+      text: data['text'],
+      createdAt: DateTime.parse(data['createdAt']),
+      userId: data['userId'],
+      userName: data['userName'],
+      userImageURL: data['userImageURL'],
+    );
   }
 }
