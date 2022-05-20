@@ -37,6 +37,13 @@ class Cronometro extends StatelessWidget {
                   icone: Icons.play_arrow,
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.only(right: 10),
+              //   child: CronometroBotao(
+              //     texto: 'Parar',
+              //     icone: Icons.stop,
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: CronometroBotao(
