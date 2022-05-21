@@ -1,0 +1,6 @@
+targets:
+  $default:
+    builders:
+      mobx_codegen|mobx_codegen:
+        generate_for:
+          - "lib/sotore/**.sotore.dart"
